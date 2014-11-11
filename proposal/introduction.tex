@@ -1,9 +1,41 @@
 \section{Introduction}
-Simultaneous localization and mapping (SLAM) is the central problem of autonomous robot navigation, and it also relates to 3-D reconstruction and augmented reality. Pose graph based SLAM approaches formulate it into an inference problem on a factor graph, where variable nodes are (unobserved) locations/poses of the robot and landmarks, and factor nodes are (observed) spatial constraints (usually Gaussians) between variable nodes. The goal of the inference problem is to obtain the maximum likelihood estimate of the joint probability, which will be the geometric estimates of robot trajectory and the map.
+Simultaneous localization and mapping (SLAM) is the central problem of
+autonomous robot navigation, also relates to 3-D reconstruction and
+augmented reality. Graph SLAM formulate it as an inference problem on a factor
+graph, where landmark locations and robot poses are the hidden variables nodes
+to be mapped and localized, and spatial measurements are the observed factor
+nodes as constraints between variable nodes. Then the goal of the inference
+problem is to obtain the maximum likelihood estimate of the joint probability
+of the graph, which becomes the geometrically consistent estimate of robot
+trajectory and the map. This maximum likelihood estimate on factor graphs can
+be solved by belief propagation, or more recently, by numerical methods after
+converting into a non-linear square optimization.
 
+Problems arise when factors incorrectly link unrelated variable nodes,
+effectively creating wormholes between spatially distant locations thus
+distorting the map geometry. Various circumstances can result in wrong
+factors. For pose only graph, the robot continously acquires odometric
+measurements, which represent factors between the previous and next robot
+poses, and occasionally acquires loop closures, specifying spatial localities
+between arbitrary poses. Loop closures are provided by the front-end using
+algorithms based on certain similarities and inevitably make mistakes.  For
+landmark-based graph, the data association process can also easily obtain
+wrong visual feature correspondances, that is, connecting landmarks to the
+wrong poses. Hence, accurate SLAM necessitates robust handling of front-end
+outliers.
 
-Problems arise when factors generated from faulty sensor data inconsistently link unrelated variable nodes, the estimated graph will be distorted. There are robust methods to deal with this, such as max-mixture\cite{mm} which represents factors not as a single spatial Gaussian distribution, but as a mixture of Gaussians, which can handle occasional outliers efficiently. There are also mature frameworks to efficiently optimize such estimation numerically\cite{isam}.
+Another issue beyond robust SLAM is dynamism in the environment. Typical SLAM
+approaches in the literature are designed for unmanned navigation in
+uninhabited areas, and thus mostly assume a static environment with stationary
+landmarks or loop closures. However, recent human-robot interaction research
+has seen more applications of navigation in populated, crowded, or social
+environments where people and furniture moving around is the major
+characterstics. If the landmarks are moving, then by the current methods,
+localization is either carried away by the movement, resulting in the kidnapped
+robot problem, or more inconsistency happens and the map gets distorted. 
 
-Such methods mainly considers perceptual aliasing errors stemmed from wrong loop closures, and they assume landmarks to be immovable in static environments. Unfortunately such assumptions do not hold for an important application of robot navigation in social environments, where there will be people moving around, and objects moving around. If a whole block of presumed ``landmarks'' change their locations, max-mixture will not be able to handle the systemic errors. As far as we know, the state of art of SLAM still deals with this problem by using external filtering to avoid moving objects as a whole, a method proposed by Thrun for self-driving cars 10 years ago.
-
-We plan to devise new graph representations and algorithms to deal with this kind of data within the factor graph framework. The baseline will be the max-mixture method. There are plenty of existing implementations and datasets to try on.
+In this paper we plan to devise new graph representations and algorithms to
+address the issue of front-end outliers and the issue of environmental dynamism
+within the factor graph framework. We will evaluate existing approaches of
+robust SLAM and conduct experiments on real world datasets to validate the
+performance of our approach.

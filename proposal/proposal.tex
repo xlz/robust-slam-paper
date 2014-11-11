@@ -4,10 +4,12 @@
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage[font=scriptsize]{caption}
 %\documentstyle[nips13submit_09,times,art10]{article} % For LaTeX 2.09
 
 
-\title{Robust SLAM In Dynamic Environments}
+\title{Robust SLAM in Dynamic Environments}
 
 
 \author{
@@ -65,20 +67,7 @@ Providence, RI 02912 \\
 %An experimental evaluation protocol. How will you know that you've succeeded?
 %A concrete timeline for accomplishing your project by the end of the course. What are the biggest challenges?
 
-\begin{abstract}
-Recent development in human-robot interaction brings about higher requirements
-for robot navigation. Existing Simultaneous Localization and Mapping (SLAM)
-approaches have become unsuited for navigation in dynamic, complex
-environments because of either assumptions about static environments or
-computational limitations. In this paper we propose a new graph SLAM framework
-using (draft) incremental EM algorithm to maintain a reference frame while
-establishing the estimation of robot trajectory and the map in real-time. We
-will evaluate the performance of existing robust SLAM algorithms as baselines,
-and validate the improvement of our new framework against datasets of dynamic
-environments with moving objects.
-\end{abstract}
-
-
+\input{abstract}
 \input{introduction}
 \input{relatedwork}
 \input{model}
