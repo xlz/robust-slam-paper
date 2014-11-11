@@ -33,4 +33,9 @@ max-mixture algorithms.
 
 This demonstrates how the max-mixture algorithm is unable to handle a locally
 consistent moving landmark while capable of handling noise of large
-displacement and spurious loop closures. 
+displacement or spurious loop closures. An explanation for this is that each
+clique of landmarks with coherent motion forms a plausible reference frame for
+related observations. Inference based on each independent reference frame will
+reach plausible estimate of robot trjectory and the map, however averaging over
+a sum of different reference frames would lead to wrong conclusions.
+
