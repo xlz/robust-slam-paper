@@ -1,3 +1,36 @@
 \section{Preliminary Results}
 
-prelim results.
+In this section, we evaluate the max-mixture algorithm well-known for its
+capability of handling a large amount of incorrect loop closures. Since the
+max-mixture algorithm is a representative framework in the robust SLAM
+literature, its performance against dynamic environments will have border
+implication on later work.
+
+The evaluation is based on the Victoria Park dataset with different crafted
+noises introduced on a single landmark (landmark 249). The dataset contains
+10607 measurements, 151 landmarks, and 6969 poses. Figure XX shows a local
+part of the trajectory and map estimation obtained by the max-mixture
+algorithm on three instances of the dataset.
+
+The top plot is the result on the originally dataset with all observations of
+landmark 249 converted to unimodal max-mixture distributions. SLAM graph
+optimization converges with chi-square of 17287.
+
+In the middle plot, all observations of landmark 249 are displaced with a 10
+meter southward bias, and converted to unimodal max-mixture distributions. In
+this part, SLAM graph optimization converges with chi-square of 231898,
+indicating highly uncertain results. Also, almost half of observations are
+rejected by the max-mixture algorithm, while the resulting trajectory only
+suffers from slight distortion with landmark 249 correctly displaced by the
+amount of the bias in the resulting map.
+
+In th bottom plot, all observations of landmark 249 are added with offsets in
+a way to simulate that the landmark is moving slowly southward. The total
+movement of landmark 249 is 7 meter. As a result, SLAM graph optimization
+converges with a low chi-square at 17807, and the resulting trajectory is
+largely distored with all observations of landmark 249 being accepted by the
+max-mixture algorithms.
+
+This demonstrates how the max-mixture algorithm is unable to handle a locally
+consistent moving landmark while capable of handling noise of large
+displacement and spurious loop closures. 
