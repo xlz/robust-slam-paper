@@ -1,6 +1,26 @@
 \section{Related Work}
 related work
 
-\{mni\} To gain robustness against false positive loop closures, the switchable constraints approach allows the optimizer to be able to naturally change the topological structure of the problem during the optimization itself, which significantly increases the robustness against outliers of the whole SLAM system and closes the gap between the front-end and the back-end. This way, edges representing outlier constraints can be removed from the graph during the optimization. This is achieved by augmenting the original problem and introducing an additional type of hidden variable: A switch variable is associated with each factor that could potential represent an outlier. This additional variable acts as a multiplicative scaling factor on the information matrix associated with that constraint. Depending on the state of the switch variable (a value between 0 and 1), the resulting information matrix is either the original matrix (when the switch is equal to 1) or 0 (when the switch is 0) or something between both ends. Notice that if the switch variable is equal to 0, the associated constraint is completely removed and has no influence on the overall solution. 
+\{mni\} To gain robustness against false positive loop closures, the
+switchable constraints approach allows the optimizer to be able to naturally
+change the topological structure of the problem during the optimization
+itself, which significantly increases the robustness against outliers of the
+whole SLAM system and closes the gap between the front-end and the back-end.
+This way, edges representing outlier constraints can be removed from the graph
+during the optimization. This is achieved by augmenting the original problem
+and introducing an additional type of hidden variable: A switch variable is
+associated with each factor that could potential represent an outlier. This
+additional variable acts as a multiplicative scaling factor on the information
+matrix associated with that constraint. Depending on the state of the switch
+variable (a value between 0 and 1), the resulting information matrix is either
+the original matrix (when the switch is equal to 1) or 0 (when the switch is
+0) or something between both ends. Notice that if the switch variable is equal
+to 0, the associated constraint is completely removed and has no influence on
+the overall solution. 
 
-Since in pose graph SLAM, every loop closure factor could be an outlier, we associate each loop closure edge with one of the newly introduced switch variables. With the switchable constraints, the optimization therefore works on an augmented problem, searching for the joint optimal configuration of the original variables and the newly introduced switch variables, here searching the optimal graph topology. 
+Since in pose graph SLAM, every loop closure factor could be an outlier, we
+associate each loop closure edge with one of the newly introduced switch
+variables. With the switchable constraints, the optimization therefore works
+on an augmented problem, searching for the joint optimal configuration of the
+original variables and the newly introduced switch variables, here searching
+the optimal graph topology. 
