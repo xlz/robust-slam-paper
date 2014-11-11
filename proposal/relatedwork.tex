@@ -48,6 +48,9 @@ on an augmented problem, searching for the joint optimal configuration of the
 original variables and the newly introduced switch variables, here searching
 the optimal graph topology. 
 
+The most similar work to ours is \cite{rogers2010slam}, which uses the same formulations as we did in figure \ref{fig:model}. They added a indicator variable to every landmark and use EM algorithms to iteratively infer those additional variables in the graphical model. However, the EM algorithm is not online -- if there's a new observation we need to run the whole algorithm again. We want to address this issue by designing algorithms that is reasonable in performance while fast enough to compute.
+
+
 These methods based on EM algorithm suffer from the limitation of EM algorithm
 in which they do not have the guarantee of convergence in specified number of
 iterations, making them unsuitable for real-time applications.
