@@ -9,7 +9,7 @@
 \end{wrapfigure}
 
 \section{Graphical Model Formulation}
-Following \cite{isam} we formulate the SLAM problem in graphical models in figure \ref{fig:model}. Specifically, the robot states are denoted by $X = \{x_i\}$ with $i \in 0, \dots T$, the landmarks by $L = \{l_j\}$ with $j \in 1,\dots, N$, the control inputs by $U = \{u_i\}$ for $i \in 1,\dots, T$ and the landmard measurements by $Z = \{z_k\}$ with $k \in 1, \dots, K$. In addition to the traditional SLAM formulation, we also add latent parameters $W = \{w_j\}$ with $j \in 1, \dots, N$  The joint probability of all variables and measurements are given by
+Following \cite{isam} we formulate the SLAM problem in graphical models in Figure \ref{fig:model}. Specifically, the robot states are denoted by $X = \{x_i\}$ with $i \in 0, \dots T$, the landmarks by $L = \{l_j\}$ with $j \in 1,\dots, N$, the control inputs by $U = \{u_i\}$ for $i \in 1,\dots, T$ and the landmard measurements by $Z = \{z_k\}$ with $k \in 1, \dots, K$. In addition to the traditional SLAM formulation, we also add latent parameters $W = \{w_j\}$ with $j \in 1, \dots, N$  The joint probability of all variables and measurements are given by
 \begin{equation}
 P(X, L, U, Z, W) = \prod\limits_{i}P(x_i|x_{i-1}, u_i)\prod\limits_{k}P(z_k|x_{i_k}, l_{j_k}, w_k)
 \label{eq:jointProb}
