@@ -1,4 +1,5 @@
 \section{Graphical Model Formulation}
+\label{sec:model}
 \begin{wrapfigure}{r}{0.25\textwidth}
 \begin{center}
 %\framebox[4.0in]{$\;$}
@@ -34,7 +35,7 @@ z_k &= h_k(x_{i_k}, l_{j_k}) + \nu_k
 \end{equation}
 where $\omega_i$ and $\nu_k$ follow zero-mean normal distribution with covariance matrices $\Gamma_i$ and $\Sigma_k$. With this formulation, the second part of the equation \ref{eq:jointProb} is
 \begin{equation}
-P(z_k|x_{i_k}, l_{j_k}, w_k)\propto \exp\{-w_k((z_k - h(x_{i_k}, l_{j_k}))^T\Sigma^{-1}(z_k - h(x_{i_k}, l_{j_k}))\}.
+P(z_k|x_{i_k}, l_{j_k}, w_k)\propto \exp\{-w_k((z_k - h_k(x_{i_k}, l_{j_k}))^T\Sigma_k^{-1}(z_k - h_k(x_{i_k}, l_{j_k}))\}.
 \label{eq:sensor}
 \end{equation}
 $w_k$ is the likelihood that the measurement comes from static landmark. In our case, we need to infer what those values are and ideally the process could be online or folows an incremental fashion. Possible solutions could be 1) using visual cues to cluster the landmarks to ``moving''/``static''. Challenges mainly lies in whether the features we use is reliable or not in terms of this clustering task; 2) instead of using an expensive EM algorithm in \cite{rogers2010slam}, we design particle filters to incrementally update parameter $w_k$, making the whole process online.
