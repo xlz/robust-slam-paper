@@ -1,0 +1,67 @@
+\newpage
+\appendix
+\section{SLAM as a Least Squares Problem}
+\label{appendix:leastsquare}
+For completeness of the paper, we review how to form the SLAM optimization problem as a least squares problem, and we'll follow the derivation in \cite{isam}. Recall that in equation \ref{eq:MAP}, we need to solve a quadratic program, however we may approximate the terms with first order polynomials. For the process term,
+\begin{equation}
+\begin{aligned}
+&f_i(x_{i-1}, u_i) - x_i\\
+\approx & {f_i(x_{i-1}^0, u_i)} + F_i^{i-1}\delta x_{i-1} - (x_i^0 + \delta x_i)\\
+=& F_i^{i-1}\delta x_{i-1} + G_i^i\delta x_i - a_i \\
+F_i^{i-1} =& \frac{\partial f_i(x_{i-1}, u_i)}{\partial x_{i-1}}|_{x_{i-1}^0}, \quad G_i^i = -I,\quad a_i = x_i^0 - f_i(x_{i-1}^0, u_i)
+\end{aligned}
+\label{eq:linearProcessTerm}
+\end{equation}
+And for the measurement term:
+\begin{equation}
+\begin{aligned}
+&h_k(x_{i_k}, l_{j_k}) - z_k\\
+\approx &{h_k(x_{i_k}^0, l_{j_k}^0) + H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k}} - z_k\\
+=&{H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k}} - c_k\\
+H_k^{i_k} = \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|&_{(x_{i_k}^0, l_{j_k}^0)},\quad J_k^{j_k} = \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|_{(x_{i_k}^0, l_{j_k}^0)} ,\quad c_k = z_k - h_k(x_{i_k}^0, l_{j_k}^0)
+\end{aligned}
+\label{eq:linearMeasurementTerm}
+\end{equation}
+%In our case, 
+%\begin{equation}
+%\begin{aligned}
+%h(x_i, l_j) = 
+%\begin{pmatrix}
+%\sqrt{(x_i^x - l_j^x)^2 + (x_i^y - l_j^y)^2}\\
+%\tan^{-1}(\frac{l_j^y - x_j^y}{l_j^x - x_i^x}) - \theta_i
+%\end{pmatrix}\\
+%\end{aligned}
+%\label{eq:measurementTermDerivative}
+%\end{equation}
+
+
+Therefore, the optimization problem thus becomes
+\begin{equation}
+\delta \theta^* = \text{arg}\min\limits_{\delta \theta}\{\sum\limits_{i=1}^M||F_i^{i-1}\delta x_{i-1} + G_i^i\delta x_i - a_i||_{\Lambda_i}^2 + \sum_{k=1}^Kw_{l_k}||H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k} - c_k||_{\Gamma_k}^2\}
+\end{equation}
+
+To rewrite the Mahalanobis norm, notice that
+\begin{equation}
+||e||_{\Lambda}^2 = e^T\Lambda^{-1}e = ||\Lambda^{-T/2}e||^2
+\end{equation}
+Therefore, we can collect all the Jacobian matrices multiplied by either $\Lambda_i^{-T/2}$ or $w^{1/2}\Gamma_k^{-T/2}$, specifically,
+\begin{equation}
+\begin{aligned}
+\delta \theta^* =& \text{arg}\min\limits_{\delta \theta}\{\sum\limits_{i=1}^M||\Lambda_i^{-T/2}F_i^{i-1}\delta x_{i-1} + \Lambda_i^{-T/2} G_i^i\delta x_i - \Lambda_i^{-T/2}a_i||^2  \\
+&+\sum_{k=1}^K||\sqrt{w_{l_k}}\Gamma_k^{-T/2} H_k^{i_k}\delta x_{i_k} + \sqrt{w_{l_k}}\Gamma_k^{-T/2}J_k^{j_k}\delta l_{j_k} - \sqrt{w_{l_k}}\Gamma_k^{-T/2}c_k||^2\}
+\end{aligned}
+\end{equation}
+
+
+We stack the matrices to a huge matrix $A$, stack $\delta x, \delta l$ to $\delta \theta$ and vectors to $b$, and obtain the standard least squares problem.
+\begin{equation}
+\delta \theta^* = \text{arg}\min\limits_{\delta \theta}||A\delta \theta - b||^2
+\end{equation}
+
+
+
+
+
+
+
+

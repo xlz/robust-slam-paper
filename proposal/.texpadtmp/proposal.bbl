@@ -1,0 +1,56 @@
+\begin{thebibliography}{1}
+
+\bibitem{haehnel03iros}
+D.~H{\"a}hnel, W.~Burgard, D.~Fox, and S.~Thrun.
+\newblock A highly efficient {FastSLAM} algorithm for generating cyclic maps of
+  large-scale environments from raw laser range measurements.
+\newblock In {\em Proc.~of the IEEE/RSJ International Conference on Intelligent
+  Robots and Systems (IROS)}, 2003.
+
+\bibitem{isam}
+M.~Kaess, A.~Ranganathan, and F.~Dellaert.
+\newblock {iSAM}: Incremental smoothing and mapping.
+\newblock {\em IEEE Trans. on Robotics (TRO)}, 24(6):1365--1378, December 2008.
+
+\bibitem{g2o}
+Rainer Kummerle, Giorgio Grisetti, Hauke Strasdat, Kurt Konolige, and Wolfram
+  Burgard.
+\newblock g2o: A general framework for graph optimization.
+\newblock In {\em Robotics and Automation (ICRA), 2011 IEEE International
+  Conference on}, pages 3607--3613. IEEE, 2011.
+
+\bibitem{neal1998EM}
+Radford~M Neal and Geoffrey~E Hinton.
+\newblock A view of the em algorithm that justifies incremental, sparse, and
+  other variants.
+\newblock In {\em Learning in graphical models}, pages 355--368. Springer,
+  1998.
+
+\bibitem{mm}
+Edwin Olson and Pratik Agarwal.
+\newblock Inference on networks of mixtures for robust robot mapping.
+\newblock In {\em Proceedings of Robotics: Science and Systems}, Sydney,
+  Australia, July 2012.
+
+\bibitem{rogers2010slam}
+John~G Rogers, Alexander~JB Trevor, Carlos Nieto-Granda, and Henrik~Iskov
+  Christensen.
+\newblock Slam with expectation maximization for moveable object tracking.
+\newblock In {\em Intelligent Robots and Systems (IROS), 2010 IEEE/RSJ
+  International Conference on}, pages 2077--2082. IEEE, 2010.
+
+\bibitem{Switchable12}
+Niko Sunderhauf and Peter Protzel.
+\newblock Switchable constraints for robust pose graph slam.
+\newblock In {\em Proc. of IEEE Conf. on Intelligent Robots and Systems (IROS),
+  2012}, 2012.
+
+\bibitem{wang2003online}
+Chieh-Chih Wang, Charles Thorpe, and Sebastian Thrun.
+\newblock Online simultaneous localization and mapping with detection and
+  tracking of moving objects: Theory and results from a ground vehicle in
+  crowded urban areas.
+\newblock In {\em Robotics and Automation, 2003. Proceedings. ICRA'03. IEEE
+  International Conference on}, volume~1, pages 842--849. IEEE, 2003.
+
+\end{thebibliography}

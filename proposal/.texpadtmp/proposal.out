@@ -1,6 +1,10 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Related Work}{}% 2
 \BOOKMARK [1][-]{section.3}{Graphical Model Formulation}{}% 3
-\BOOKMARK [1][-]{section.4}{Preliminary Results}{}% 4
-\BOOKMARK [1][-]{section.5}{Discussion}{}% 5
-\BOOKMARK [1][-]{section.6}{Timeline}{}% 6
+\BOOKMARK [1][-]{section.4}{Using EM to estimate model parameters}{}% 4
+\BOOKMARK [2][-]{subsection.4.1}{Traditional EM algorithm}{section.4}% 5
+\BOOKMARK [2][-]{subsection.4.2}{An incremental EM approach}{section.4}% 6
+\BOOKMARK [1][-]{section.5}{Preliminary Results}{}% 7
+\BOOKMARK [1][-]{section.6}{Discussion}{}% 8
+\BOOKMARK [1][-]{section.7}{Timeline}{}% 9
+\BOOKMARK [1][-]{appendix.A}{SLAM as a Least Squares Problem}{}% 10

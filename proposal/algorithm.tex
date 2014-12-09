@@ -12,7 +12,7 @@ l(Z, X, L, W) = \sum\limits_k(-w_{l_k}(\mu_k^T\Sigma_k^{-1}\mu_k)) - \lambda(1 -
 where $\mu_k = z_k - h_k(x_{i_k}, l_{j_k})$ and $w_{l_k}$ is the weight of landmark $l$ involved in the $k^{th}$ measurement. We equate its derivative to 0 to maximize the log likelihood, and for each $w_l$ we get
 \begin{equation}
 \begin{aligned}
-w_k = 1 - \frac{\sum_{k \in K_l}\mu_k^T\Sigma_k^{-1}\mu_k}{2\lambda}
+w_l = 1 - \frac{\sum_{k \in K_l}\mu_k^T\Sigma_k^{-1}\mu_k}{2\lambda}
 \end{aligned}
 \label{eq:wk}
 \end{equation}
@@ -24,7 +24,7 @@ X^*, L^* &= \text{arg}\min\limits_{X, L}-\log(X, L, U, Z, W)\\
 \end{aligned}
 \label{eq:MAP}
 \end{equation}
-where the $||.||_\Sigma$ term denotes the Mahalanobis distance with $\Sigma$. With some derivation, the optimization problem can be formed as a standard least-squares problem
+where the $||.||_\Sigma$ term denotes the Mahalanobis distance with $\Sigma$. With some derivation\footnote{See Appendix section \ref{appendix:leastsquare} for detail}, the optimization problem can be formed as a standard least-squares problem
 \begin{equation}
 \delta^* = \text{arg}\min\limits_\delta||A\delta - b||_2^2
 \label{eq:optimization}
