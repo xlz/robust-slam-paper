@@ -1,0 +1,54 @@
+\section{Using EM to estimate model parameters}
+Following the notation in section \ref{sec:model}, we introduce the traditional EM approach for estimating $w$, then introduce an incremental EM approach as an  improvement.
+\subsection{Traditional EM algorithm}
+\label{sec:traditionalEM}
+As described in \cite{rogers2010slam}, in equation \ref{eq:sensor}, the hidden variables $w_k$ must be estimated from multiple observations of each object. \textbf{In M step}, we select $w$ to maximize the joint likelihood. Since the likelihood can be trivially maximized by setting $w_k = 0$ for all $k$, we use Lagrange multiplier to penalize this situation in equation \ref{eq:lagrangeMultiplier}
+\begin{equation}
+\begin{aligned}
+l(Z, X, L, W) = \sum\limits_k(-w_{l_k}(\mu_k^T\Sigma_k^{-1}\mu_k)) - \lambda(1 - w)^T(1 - w)
+\end{aligned}
+\label{eq:lagrangeMultiplier}
+\end{equation}
+where $\mu_k = z_k - h_k(x_{i_k}, l_{j_k})$ and $w_{l_k}$ is the weight of landmark $l$ involved in the $k^{th}$ measurement. We equate its derivative to 0 to maximize the log likelihood, and for each $w_l$ we get
+\begin{equation}
+\begin{aligned}
+w_l = 1 - \frac{\sum_{k \in K_l}\mu_k^T\Sigma_k^{-1}\mu_k}{2\lambda}
+\end{aligned}
+\label{eq:wk}
+\end{equation}
+where $K_l$ is the set of measurements of landmark $l$ and $\lambda$ is an assigned parameter to trade off the penalty. \textbf{In E step}, we use the estimated parameters, and use the standard approach in \cite{isam}, with a minor corrections of the introduction of $w_k$. Specifically, we want to compute the MAP estimate of 
+\begin{equation}
+\begin{aligned}
+X^*, L^* &= \text{arg}\min\limits_{X, L}-\log(X, L, U, Z, W)\\
+&=\text{arg}\min\limits_{X, L}\{\sum\limits_{i=1}^M||f_i(x_{i-1}, u_i) - x_i)||^2_{\Lambda_i} + \sum\limits_{k=1}^Kw_k||h_k(x_{i_k}, l_{j_k}) - z_k||^2_{\Sigma_k}\}
+\end{aligned}
+\label{eq:MAP}
+\end{equation}
+where the $||.||_\Sigma$ term denotes the Mahalanobis distance with $\Sigma$. With some derivation\footnote{See Appendix section \ref{appendix:leastsquare} for detail}, the optimization problem can be formed as a standard least-squares problem
+\begin{equation}
+\delta^* = \text{arg}\min\limits_\delta||A\delta - b||_2^2
+\label{eq:optimization}
+\end{equation}
+
+The algorithm, while reliable as shown in experiments in \cite{haehnel03iros}, is slow, because we ought to run this EM algorithm again if we get a new observation. Also in $E$ step, running ISAM algorithm takes time, making this algorithm work only offline. 
+\subsection{An incremental EM approach}
+We introduce an incremental EM approach for the problem. As hinted in \cite{neal1998EM}, if the joint probability is fully factorized with regards to the examples, as is in our case, we can use the following algorithm to update in E and M step:
+\paragraph{E step} 
+In equation \ref{eq:MAP}, if we have one observation $z_k$, then
+\begin{equation}
+x_{i_k}^*, l_{j_k}^* = \text{arg}\min\limits_{x_{i_k}, l_{j_k}}\{\sum\limits_{i \in i_k}||f_i(x_{i-1}, u_i) - x_i)||^2_{\Lambda_i} + ||h_k(x_{i_k}, l_{j_k}) - z_k||^2_{\Sigma_k}\}
+\label{eq:facMAP}
+\end{equation}
+And equation \ref{eq:facMAP} can also be written in the form of \ref{eq:optimization}, but with less parameters. So, the incremental E step becomes
+\begin{itemize}
+\item Choose some observation term, k, to be updated
+\item Set $x_{i_p}^{(t)} = x_{i_p}^{(t-1)}, l_{j_p}^{(t)} = l_{j_p}^{(t-1)}$ for $p \neq k$
+\item Set $x_{i_k}, l_{j_k}$ according to equation \ref{eq:MAP} in equation \ref{eq:optimization}'s form.
+\end{itemize}
+\paragraph{M step:} The same step as introduced in section \ref{sec:traditionalEM}, using the derivation in equation \ref{eq:wk}.
+
+With this incremental EM algorithm, the E step can be much faster since the optimization problem has less parameters. Also, after several iterations, we may use the model to update the parameters by adding more observations, without the need to run the EM algorithm on all the observations again.
+
+
+
+

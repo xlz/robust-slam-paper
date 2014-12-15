@@ -1,0 +1,35 @@
+\section{Introduction}
+Simultaneous localization and mapping (SLAM) is the central problem of
+autonomous robot navigation. Graph SLAM formulate it as an inference problem
+on a factor graph, where landmark locations and robot poses are the hidden
+variables nodes to be mapped and localized, and spatial measurements are the
+observed factor nodes as constraints between variable nodes. Then the goal of
+the inference problem is to obtain the maximum likelihood estimate of the
+joint probability of the graph, which becomes the geometrically consistent
+estimate of robot trajectory and the map. This maximum likelihood estimate on
+factor graphs can be solved by belief propagation, or more recently, by
+numerical methods after converting into a nonlinear squares optimization.
+
+Problems arise when factors incorrectly link unrelated variable nodes,
+effectively creating wormholes between spatially distant locations thus
+distorting the map geometry. In pose graphs, loop closures specify spatial
+localities between arbitrary poses, but often wrongly connect randomly poses
+because of bad decisions from the front-end.  In landmark-based graphs, the
+data association process can also easily obtain wrong visual feature
+correspondances, connecting landmarks to the wrong poses. This necessitates
+robust SLAM.
+
+Another issue beyond robust SLAM is dynamism in the environment. Typical SLAM
+techniques in the literature are designed for unmanned navigation in
+uninhabited areas, thus mostly assume static environments with stationary
+landmarks or loop closures. However, recent human-robot interaction research
+has seen more applications of navigation in populated, crowded, or social
+environments where people and furniture moving around is the major
+characterstics. If the landmarks are moving, the current localization is either
+kidnapped by the movement, or resulting in distorted maps.
+
+In this paper we plan to devise new graph representations and algorithms to
+address the issue of front-end outliers and the issue of environmental
+dynamism within the factor graph framework. We will evaluate existing
+approaches of robust SLAM and conduct experiments on real world datasets to
+validate the performance of our approach.

@@ -1,0 +1,5 @@
+\section{Discussion}
+
+Inference challenges need to be solved: 1) EM in its current form is not fast enough for our application, how to make EM fast? How to decompose the EM problem into incremental parts and reuse previous computation? 2) Not robust enough, how do incorporate robust techniques in EM? Need testing with real world and see failure modes.
+
+An experimental evaluation protocol: most data related to SLAM will or should have ground truth. To evaluate, compare with the ground truth to determine if  the result is accurate enough. Examine the internals of EM, log-likelihood of each iteration, chi-square test to verify the internal correctness.
