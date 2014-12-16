@@ -16,20 +16,20 @@ distorting the map geometry. In pose graphs, loop closures specify spatial
 localities between arbitrary poses, but often wrongly connect randomly poses
 because of bad decisions from the front-end.  In landmark-based graphs, the
 data association process can also easily obtain wrong visual feature
-correspondances, connecting landmarks to the wrong poses. This necessitates
+correspondences, connecting landmarks to the wrong poses. This necessitates
 robust SLAM.
 
-Another issue beyond robust SLAM is dynamism in the environment. Typical SLAM
-techniques in the literature are designed for unmanned navigation in
-uninhabited areas, thus mostly assume static environments with stationary
+Another issue beyond robust SLAM is dynamic elements in the environment.
+Typical SLAM techniques in the literature are designed for unmanned navigation
+in uninhabited areas, thus mostly assume static environments with stationary
 landmarks or loop closures. However, recent human-robot interaction research
 has seen more applications of navigation in populated, crowded, or social
 environments where people and furniture moving around is the major
-characterstics. If the landmarks are moving, the current localization is either
+characteristics. If the landmarks are moving, the current localization is either
 kidnapped by the movement, or resulting in distorted maps.
 
-In this paper we plan to devise new graph representations and algorithms to
+In this paper we devise new graph representations and algorithms to
 address the issue of front-end outliers and the issue of environmental
-dynamism within the factor graph framework. We will evaluate existing
+dynamic elements within the factor graph framework. We evaluate existing
 approaches of robust SLAM and conduct experiments on real world datasets to
 validate the performance of our approach.

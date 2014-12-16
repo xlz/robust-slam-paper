@@ -1,5 +1,14 @@
-\section{Discussion}
+\section{Future Work}
 
-Inference challenges need to be solved: 1) EM in its current form is not fast enough for our application, how to make EM fast? How to decompose the EM problem into incremental parts and reuse previous computation? 2) Not robust enough, how do incorporate robust techniques in EM? Need testing with real world and see failure modes.
+We have shown the basic efficacy of our approach, but the evaluation is far from being comprehensive. The performance under different percentage of randomly generated outliers, and different sources and types of datasets including 3-D datasets are needed for a complete understanding of the performance in our approach. Due to the different nature of source of errors of moving landmarks than spurious loop closure, the effect of different numbers of observations associated with landmarks also needs to be taken into account for systematic evaluation.
 
-An experimental evaluation protocol: most data related to SLAM will or should have ground truth. To evaluate, compare with the ground truth to determine if  the result is accurate enough. Examine the internals of EM, log-likelihood of each iteration, chi-square test to verify the internal correctness.
+We have examined the theoretical basis for the incremental variant of the EM algorithms. Considering the fast convergence of our batch EM algorithm it might be possible to integrate the incremental algorithm into the graph optimization process without loss of the correctness of the EM algorithms, and making our approach suitable for real-time update.
+
+In our formulation, there are pre-defined parameters $\lambda$ for penalizing against removing too many landmarks, which is essentially a decision boundary, and $\Phi$ for the robust kernel. The appropriate method to choose the parameters and their sensitivity to environmental factors and dataset characteristics need to be examined. There are multiple robust SLAM methods proposing different penalty terms which derive into these parameters. A comparison of the alternative choices of penalty terms is also necessary.
+
+\section{Conclusion}
+
+This paper proposed a new method to characterize and identify the mobility of potentially moving landmarks by using the EM algorithms with robust kernel. The feasibility of the proposed approach was shown and evaluated on synthesized datasets from a standard dataset. We compared with existing state-of-the-art methods and showed that observation based robust methods are unable to handle moving landmarks while EM alone without robust kernel does not deal with small continuous movement robustly. We also propose an incremental variant of our approach which will be suitable for real-time incremental update in future implementation.
+
+\subsection*{Author Contributions Statement}
+Xiang, Ni, and Ren developed the concept of the model. Xiang and Ni surveyed the literature. Ren provided mathematical derivation and the figure. Xiang implemented the algorithm and data processing utility. Xiang and Ni designed and performed experiments. Xiang provided the experiment visualization. Xiang drafted and finalized the majority of the manuscript; Ren drafted the derivation; Ni drafted a subsection in Related Work and a subsection in Experimentation.

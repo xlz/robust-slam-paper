@@ -1,3 +1,8 @@
 *.log
 *.out
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.txt
 proposal.pdf

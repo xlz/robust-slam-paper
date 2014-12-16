@@ -1,67 +1,145 @@
-\section{Preliminary Results}
+\section{Experimentation}
 
-In this section, we evaluate the performance of the state-of-the-art robust
+We implemented our method as discussed previously and compared the result with
+various alternative approaches. Our implementation is based on the graph
+optimization framework g2o \cite{g2o}, and we programmed a plug-in type library
+in C++ to represent our modified objective function while reusing the Gauss-Newton
+optimization functionality. The type library exposes properties of the edges including
+the error metric, reweighted information matrix, and robust Mahalanobis distance function.
+
+\subsection{Datasets}
+
+We use the commonly compared dataset Victoria Park released with iSAM
+\cite{isam} and apply different types of simulated corruption to the dataset to
+generate multiple synthesized datasets to evaluate the effect on different
+approaches.  For the purpose of evaluating performance against moving
+landmarks, several other commonly used datasets are not suitable because they
+are pose-only graphs without landmarks. The Victoria Park dataset of 2-D
+odometry and landmark observations contains 6969 robot poses, 6968 odometry
+measurements, 151 landmarks, and 3640 landmark measurements obtained.
+
+\subsection{Prior Methods with Moving Landmarks}
+
+In this test, we evaluate the performance of the state-of-the-art robust
 SLAM method, the Max-Mixture algorithm, given dynamic landmark measurements.
 Max-Mixture is a robust extension to classical graph SLAM using Gaussian
 mixture in factor representation, that is, $ x_i = \sum_c \phi_c
 \mathcal{N}(\mu_c, \Sigma_c)$ for component $c$ and weight $\phi_c$, with
-obvervations being components, also similarly for $z_i$. Max-Mixture uses a max
+observations being components, also similarly for $z_i$. Max-Mixture uses a max
 function to approximate and efficiently evaluate the sum of Gaussians. It is
 well-known for its capability of handling a large amount of incorrect loop
 closures, but it is untested against moving landmarks, and this experiment can
 be representative to other approaches in the robust SLAM literature. 
 
-We apply different perturbations to a single landmark (landmark 249) in the
-Victoria Park dataset, and compare the different effects of the perturbations
-on the optimal estimate of the trajectory and the map of all landmarks obtained
-by Max-Mixture graph SLAM. The Victoria Park dataset contains 2-D odometry and
-landmark observations. As shown in figure \ref{fig:baseline} the left plot is
-the control group without perturbation, and is accurate to the ground truth. A
-single southward bias is applied to all observations of the
-landmark in the middle plot, simulating sensory outliers. A temporally
-increasing bias is applied to all observations of the landmark in the right
-plot, simulating a southward moving landmark.
+We apply different perturbations to all observations associated with a certain
+landmark which has the most observations associated in the dataset, and study
+the different effects of the perturbations on the optimal estimate of the
+trajectory and the map of all landmarks obtained by Max-Mixture graph SLAM. The
+Victoria Park dataset contains 2-D odometry and landmark observations. As shown
+in figure \ref{fig:baseline} the left plot is the control group without
+perturbation, and is accurate to the ground truth. A single southward bias is
+applied to all observations of the landmark in the middle plot, simulating
+sensory outliers. A temporally increasing bias is applied to all observations
+of the landmark in the right plot, simulating a southward moving landmark.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{fig/baseline-mm}}
 \caption{The optimal estimates of the trajectory and landmark positions
-obtained by Max-Mixture graph SLAM.  Left: low convergence uncertainty. Middle:
-high convergence uncertainty because of rejection of outlier observations
-of landmark 249.  Right: low convergence uncertainty, no outlier
-detected by Max-Mixture.}
+obtained by Max-Mixture graph SLAM.  Left: low convergence uncertainty
+(measured by objective value). Middle: high convergence uncertainty because of
+rejection of outlier observations of landmark 249.  Right: low convergence
+uncertainty, no outlier detected by Max-Mixture.}
 \label{fig:baseline}
 \end{figure}
 
 As the middle plot shows, Max-Mixture is still capable of handling noise of
-large bias or spurious loop closures introduced by simluated sensory fault. It
+large bias or spurious loop closures introduced by simulated sensory fault. It
 correctly rejects outlier landmark observations and recovers the position of
 the perturbed landmark. However, it completely fails to reject any unlikely
 landmark observations and largely distorts the resulting trajectory when given
 moving landmark measurements. An explanation for this is that each clique of
 landmarks with coherent motion forms a plausible reference frame for related
 observations. Inference based on each independent reference frame will reach
-plausible estimate of robot trjectory and the map, however robust SLAM methods
+plausible estimate of robot trajectory and the map, however robust SLAM methods
 which assume stationary landmarks will average over a sum of different
 reference frames and lead to wrong conclusions.
 
-%%%%%
-To benchmark the robustness of the proposed approach and to show its correctness and feasibility, we used the Victoria Park dataset that has been used in a number of publications before. The dataset consists of pose graphs in 2D and contain several thousand poses and landmark constraints. We corrupted the data by setting landmark ``249" (circled in red) in a constant northward movement, where its eventual position is roughly 7 meters north of its original location. We chose landmark ``249" due to the relatively large amount of observations on this particular landmark in the dataset. We expect the more observations there are on a landmark, the greater its movement would corrupt the final optimization results and the more possible that existing robust SLAM methods would fail. \\
+\subsection{Our Method Compared with Prior Methods}
 
-%% TODO: Some explanations about DCS and SLAM w/ EM
+To benchmark the robustness of the proposed approach and to show its
+correctness and feasibility, we use the Victoria Park dataset that has been
+used in a number of publications before. The dataset consists of pose graphs in
+2D and contain several thousand poses and landmark constraints. We corrupted
+the data by setting landmark ``249" (circled in red) in a constant northward
+movement, where its eventual position is roughly 7 meters north of its original
+location. We chose landmark ``249" due to the relatively large amount of
+observations associated with this particular landmark in the dataset. We expect
+the more observations there are on a landmark, the greater its movement would
+corrupt the final optimization results and the more possible that existing
+robust SLAM methods would fail.
 
-%% TODO: Add figures
-\textbf{TODO:} figures (7-meter movement, 14-meter movement, from the presentation) \\
+We compare the results of Dynamic Covariance Scaling robust kernel as discussed in our
+formulation, and also the SLAM with EM approach proposed in \cite{rogers2010slam}.
 
+\begin{figure}[ht]
+\centering
+\begin{minipage}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{fig/small-movement}
+  \caption{Dataset corrupted by the landmark with small movement}
+  \label{fig:small-movement}
+\end{minipage}
+\quad
+\begin{minipage}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{fig/large-movement}
+  \caption{Dataset corrupted by the landmark with large movement}
+  \label{fig:large-movement}
+\end{minipage}
+\end{figure}
 
-[Fig. ...] shows the results for DCS, simple EM, and our approach. As expected, current state of the art frameworks are not able to cope with the outlier constraints and converge towards defective solutions. This is particularly illustrated in the lower left figure of [Fig. ...], which shows the results of simple EM algorithm with weights only added to the landmarks. Even g2o with robust DCS cost kernel is not able to converge correctly, where we can see pose graph around the moving landmark is clearly distorted. Our robust back-end however, is able to converge to a correct solution in a few iterations. The outlier is correctly deactivated by driving their associated weights $w_{j_k}$ and $v_k$ close to zeros. 
+Figure \ref{fig:small-movement} shows the results for DCS, normal EM, and our
+approach. As shown in the figure, robust observations alone are unable to
+handle moving landmarks. This is because observation based robust methods do
+not characterize the mobility of the landmark and its effect on associated
+observations and assume independence between observations which is not the case
+for moving landmarks. A moving landmark will cause associated observations to
+be inconsistent in a plausible way such that a subgroup of the observations
+might be able to converge to a local minimum but the rest of the observations
+would distort the result elsewhere. 
 
+Normal SLAM with EM was proposed in \cite{rogers2010slam} for datasets with
+very large movement. Their formulation is similar with ours except it is
+without the robust factor $v_k$.  As shown in figure \ref{fig:small-movement},
+the resulting trajectory is distorted. One explanation for this is from the
+charactersstics of the datasets.  In their paper, they investigated datasets
+containing landmarks moved from one room to another room over a long period of
+time, which is not the case in the dataset presented in figure
+\ref{fig:small-movement} where the motion of the landmark is relatively small
+and continuous. In fact, in figure \ref{fig:large-movement} the motion of the
+corrupted landmark is doubled and normal EM is able to learn the mobility
+correctly.
 
+Our robust back-end however, is able to converge to a correct solution in a few
+iterations. Our result is also verified by examining the learned parameters
+$w_{j_k}$ and $v_k$ of all landmarks, which is close to zero for the actual
+outlier landmarks, thus correctly deactivating associated corrupted
+observations.  The improvement is explained by our utilization of the robust
+kernel to make the EM algorithms reliably learn the mobility indicators of the
+landmarks correctly identify the actual moving landmarks. Thus our approach is
+able to obtain the best results in both situations.
 
-%% TODO: figures showing the learning objective 
-\textbf{TODO:} ``To help verify that your statistical learning algorithm is working properly, at least one plot showing the learning objective (joint log-probability for an MCMC method, a log-likelihood bound for a variational method, etc.) as a function of the number of learning iterations."  
+\begin{wrapfigure}{r}{0.25\textwidth}
+\begin{center}
+%\framebox[4.0in]{$\;$}
+%\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+ \includegraphics[width=0.25\textwidth]{fig/objective}
+\end{center}
+\caption{Learning objective versus iterations}
+\label{fig:objective}
+\end{wrapfigure}
 
-(Final or initial $\chi^2$ errors against number of iterations)  \\
-
-
-
-
+To help verify our learning algorithm, we also provide the plot of our learning
+objective versus learning iterations in the right figure \ref{fig:objective}.
+The algorithm almost converges after 2 iterations, mostly because the number of
+outliers introduced is relatively small compared to the total number of
+landmarks, and the graph optimization step eliminates the majority of the
+energy besides that caused by wrong identification of landmark mobility.

@@ -3,9 +3,10 @@
 Graph SLAM has multiple highly efficient optimization solutions.
 iSAM\cite{isam} converts the graph SLAM maximum likelihood estimate into a
 non-linear least squares optimization problem, then incrementally solves it by
-numerical methods, obtaining real-time performance and smoother accuracy. These
-optimization techniques show the effectiveness of the factor graph formulation
-of the SLAM problem, and we base our formulation in similar forms.
+numerical methods, obtaining real-time performance and Bayeisn smoothing
+accuracy. These optimization techniques show the effectiveness of the factor
+graph formulation of the SLAM problem, and we base our formulation on similar
+formulations.
 
 A known solution to moving objects in the environment is combining SLAM with
 object detection and tracking. \cite{wang2003online} proposes a Bayesian
@@ -22,25 +23,26 @@ essential to the SLAM problem.
 
 Robust SLAM techniques have been proposed to solve front-end outlier problems
 without relying on pre-filtering. Some use robust objective functions or robust
-representation of graph factors, such as Max-Mixture\cite{mm} which represents
-factors not as a single spatial Gaussian distribution, but as a mixture of
-Gaussians. This kind of approaches still assume sources of errors being mostly
-perceptual aliasing in wrong loop closures, without regard to environmental movement.
-Given dynamic environments they will not be able to detect and handle the
-movement of landmarks.
+representation of observations. Dynamic Covariance Scaling\cite{DCS} adds a
+robust kernel factor to regularize the Mahalanobis errors in the Gaussian
+distributions of landmark observations.  Max-Mixture\cite{mm} enhances factor
+representation with a mixture of Gaussians instead of a single spatial Gaussian
+distribution. This kind of approaches still assume sources of errors being
+mostly perceptual aliasing in wrong loop closures, without regard to
+environmental movement.  Given dynamic environments they will have difficulty
+in detecting and handling the movement of landmarks.
 
-The other approach to handling front-end outlier and dynamism is incorporating
-the problem of determining mobility as part of the back-end graph optimization
-framework.  \cite{haehnel03iros} and \cite{rogers2010slam} extend the graphical
-model with a latent indicator variable to each landmark indicating whether it
-is mobile and use the EM algorithm to iteratively infer those additional
-variables in the graphical model and estimate the optimal solution in SLAM
-adjusted with the indicators. The switchable constraints\cite{Switchable12}
-approach allows the optimizer to naturally change the topological structure of
-the problem during the optimization itself using switch variables as a
-multiplicative scaling factor on the information matrix associated with that
-constraint. However, these EM based algorithms suffer from the limitation of
-the EM algorithm in which they do not have the guarantee of convergence in
-specified number of iterations, making them unsuitable for real-time
-applications where the optimization must complete before the next measurement
-arrives.
+The other approach to handling front-end outlier and dynamic elements is
+incorporating the problem of identifying mobility as part of the back-end graph
+optimization framework.  \cite{haehnel03iros} and \cite{rogers2010slam} extend
+the graphical model with a latent indicator variable for each landmark to
+indicate whether it is mobile and use EM algorithms to iteratively infer those
+additional latent variables in the graphical model and estimate the optimal
+solution in SLAM augmented with the indicators. The switchable
+constraints\cite{Switchable12} approach allows the optimizer to naturally
+change the topological structure of the problem during the optimization itself
+using switch variables as a multiplicative scaling factor on the information
+matrix associated with that constraint. However, these EM based algorithms lack
+the robustness provided by previous techniques.  And observation based
+indicators will not be able to characterize the mobility of each landmark which
+associates with multiple observations.
