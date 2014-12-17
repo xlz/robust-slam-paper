@@ -37,25 +37,25 @@ H_k^{i_k} = \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|&_{(x_{i_k}^
 
 Therefore, the optimization problem thus becomes
 \begin{equation}
-\delta \theta^* = \text{arg}\min\limits_{\delta \theta}\{\sum\limits_{i=1}^M||F_i^{i-1}\delta x_{i-1} + G_i^i\delta x_i - a_i||_{\Lambda_i}^2 + \sum_{k=1}^Kw_{l_k}||H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k} - c_k||_{\Gamma_k}^2\}
+\delta \theta^* = \operatorname*{arg\,min}_{\delta \theta}\{\sum_{i=1}^M||F_i^{i-1}\delta x_{i-1} + G_i^i\delta x_i - a_i||_{\Gamma_i}^2 + \sum_{k=1}^Kw_{j_k}||v_k(H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k} - c_k)||_{\Sigma_k}^2\}
 \end{equation}
 
 To rewrite the Mahalanobis norm, notice that
 \begin{equation}
-||e||_{\Lambda}^2 = e^T\Lambda^{-1}e = ||\Lambda^{-T/2}e||^2
+||e||_{\Gamma}^2 = e^T\Gamma^{-1}e = ||\Gamma^{-T/2}e||^2
 \end{equation}
-Therefore, we can collect all the Jacobian matrices multiplied by either $\Lambda_i^{-T/2}$ or $w^{1/2}\Gamma_k^{-T/2}$, specifically,
+Therefore, we can collect all the Jacobian matrices multiplied by either $\Gamma_i^{-T/2}$ or $v_k w_{j_k}^{1/2}\Sigma_k^{-T/2}$, specifically,
 \begin{equation}
 \begin{aligned}
-\delta \theta^* =& \text{arg}\min\limits_{\delta \theta}\{\sum\limits_{i=1}^M||\Lambda_i^{-T/2}F_i^{i-1}\delta x_{i-1} + \Lambda_i^{-T/2} G_i^i\delta x_i - \Lambda_i^{-T/2}a_i||^2  \\
-&+\sum_{k=1}^K||\sqrt{w_{l_k}}\Gamma_k^{-T/2} H_k^{i_k}\delta x_{i_k} + \sqrt{w_{l_k}}\Gamma_k^{-T/2}J_k^{j_k}\delta l_{j_k} - \sqrt{w_{l_k}}\Gamma_k^{-T/2}c_k||^2\}
+\delta \theta^* =& \operatorname*{arg\,min}_{\delta \theta}\{\sum_{i=1}^M||\Gamma_i^{-T/2}F_i^{i-1}\delta x_{i-1} + \Gamma_i^{-T/2} G_i^i\delta x_i - \Gamma_i^{-T/2}a_i||^2  \\
+&+\sum_{k=1}^K||v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2} H_k^{i_k}\delta x_{i_k} + v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2}J_k^{j_k}\delta l_{j_k} - v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2}c_k||^2\}
 \end{aligned}
 \end{equation}
 
 
 We stack the matrices to a huge matrix $A$, stack $\delta x, \delta l$ to $\delta \theta$ and vectors to $b$, and obtain the standard least squares problem.
 \begin{equation}
-\delta \theta^* = \text{arg}\min\limits_{\delta \theta}||A\delta \theta - b||^2
+\delta \theta^* = \operatorname*{arg\,min}_{\delta \theta}||A\delta \theta - b||^2
 \end{equation}
 
 
