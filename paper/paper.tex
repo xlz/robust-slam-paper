@@ -1,45 +1,27 @@
-\documentclass{article} % For LaTeX2e
-\usepackage{nips13submit_e,times}
+%\documentclass{article} % For LaTeX2e
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+\IEEEoverridecommandlockouts                              % This command is only needed if you want to use the \thanks command
+\overrideIEEEmargins
+
+%\usepackage{nips13submit_e,times}
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{wrapfig}
 \usepackage[font=scriptsize]{caption}
+\usepackage{color}
 %\documentstyle[nips13submit_09,times,art10]{article} % For LaTeX 2.09
 
 
-\title{Robust Graph SLAM in Dynamic \\
-Environments with Moving Landmarks}
+\title{\LARGE \bf Robust Graph SLAM in Dynamic Environments with Moving Landmarks}
 
 
-\author{
-Lingzhu Xiang, Zhile Ren, Mengrui Ni \\
-Department of Computer Science\\
-Brown University\\
-Providence, RI 02912 \\
-\texttt{\{xlz, ren, mni\}@cs.brown.edu} \\
-%\And
-%Coauthor \\
-%Affiliation \\
-%Address \\
-%\texttt{email} \\
-%\AND
-%Coauthor \\
-%Affiliation \\
-%Address \\
-%\texttt{email} \\
-%\And
-%Coauthor \\
-%Affiliation \\
-%Address \\
-%\texttt{email} \\
-%\And
-%Coauthor \\
-%Affiliation \\
-%Address \\
-%\texttt{email} \\
-%(if needed)\\
+\author{Lingzhu Xiang$^{1}$ \and Zhile Ren$^{1}$ \and Mengrui Ni$^{1}$ \and Odest Chadwicke Jenkins$^{1}$
+\thanks{$^{1}$Lingzhu Xiang, Zhile Ren, Mengrui Ni, and Odest Chadwicke Jenkins are with the Department of Computer Science, Brown University, Providence, RI 02912 {\tt\small [xlz$|$ren$|$mni$|$cjenkins]@cs.brown.edu} 
+}
 }
 
 % The \author macro works with any number of authors. There are two commands
@@ -53,12 +35,17 @@ Providence, RI 02912 \\
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
 
-\nipsfinalcopy % Uncomment for camera-ready version
+\newcommand{\cj}[1]{{\color{red} \bf CJ: #1} }
+%\long\def\chad#1{\colorbox{yellow}{\bf \small *CJ: #1*}}
+
+%\nipsfinalcopy % Uncomment for camera-ready version
 
 \begin{document}
 
 
 \maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
 
 
 %A clear description of the problem or application you intend to address. Why is it worth studying?
@@ -75,9 +62,9 @@ Providence, RI 02912 \\
 \input{algorithm}
 \input{experiments}
 \input{discussion}
-\input{appendix}
 
-\bibliographystyle{plain}
+%\bibliographystyle{plain}
+\bibliographystyle{IEEEtranS}
 \bibliography{cs242_slam}{}
 %\subsection{Figures}
 %\begin{figure}[h]
@@ -87,5 +74,7 @@ Providence, RI 02912 \\
 %\end{center}
 %\caption{Sample figure caption.}
 %\end{figure}
+
+\input{appendix}
 
 \end{document}

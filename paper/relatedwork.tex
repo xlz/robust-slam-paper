@@ -1,12 +1,10 @@
 \section{Related Work}
 
 Graph SLAM has multiple highly efficient optimization solutions.
-iSAM\cite{isam} converts the graph SLAM maximum likelihood estimate into a
-non-linear least squares optimization problem, then incrementally solves it by
-numerical methods, obtaining real-time performance and Bayeisn smoothing
-accuracy. These optimization techniques show the effectiveness of the factor
-graph formulation of the SLAM problem, and we base our formulation on similar
-formulations.
+iSAM \cite{isam} converts the graph SLAM maximum likelihood estimate into a
+non-linear least squares optimization problem.  The factor graph is incrementally solved by numerical methods, obtaining real-time performance and Bayesian smoothing accuracy. These optimization techniques show the effectiveness of the factor graph formulation of the SLAM problem, and we base our formulation on similar formulations.
+
+\cj{let's also look at Wolf and Sukhatme, http://robotics.usc.edu/publications/media/uploads/pubs/392.pdf}
 
 A known solution to moving objects in the environment is combining SLAM with
 object detection and tracking. \cite{wang2003online} proposes a Bayesian
@@ -39,7 +37,7 @@ the graphical model with a latent indicator variable for each landmark to
 indicate whether it is mobile and use EM algorithms to iteratively infer those
 additional latent variables in the graphical model and estimate the optimal
 solution in SLAM augmented with the indicators. The switchable
-constraints\cite{Switchable12} approach allows the optimizer to naturally
+constraints \cite{Switchable12} approach allows the optimizer to naturally
 change the topological structure of the problem during the optimization itself
 using switch variables as a multiplicative scaling factor on the information
 matrix associated with that constraint. However, these EM based algorithms lack

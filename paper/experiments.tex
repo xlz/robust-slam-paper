@@ -1,5 +1,15 @@
 \section{Experimentation}
 
+\begin{figure*}[!ht]
+\makebox[\textwidth][c]{\includegraphics[width=\textwidth]{fig/baseline-mm}}
+\caption{The optimal estimates of the trajectory and landmark positions
+obtained by Max-Mixture graph SLAM.  Left: low convergence uncertainty
+(measured by objective value). Middle: high convergence uncertainty because of
+rejection of outlier observations of landmark 249.  Right: low convergence
+uncertainty, no outlier detected by Max-Mixture.}
+\label{fig:baseline}
+\end{figure*}
+
 We implemented our method as discussed previously and compared the result with
 various alternative approaches. Our implementation is based on the graph
 optimization framework g2o \cite{g2o}, and we programmed a plug-in type library
@@ -41,16 +51,6 @@ perturbation, and is accurate to the ground truth. A single southward bias is
 applied to all observations of the landmark in the middle plot, simulating
 sensory outliers. A temporally increasing bias is applied to all observations
 of the landmark in the right plot, simulating a southward moving landmark.
-
-\begin{figure}[ht]
-\makebox[\textwidth][c]{\includegraphics[width=\textwidth]{fig/baseline-mm}}
-\caption{The optimal estimates of the trajectory and landmark positions
-obtained by Max-Mixture graph SLAM.  Left: low convergence uncertainty
-(measured by objective value). Middle: high convergence uncertainty because of
-rejection of outlier observations of landmark 249.  Right: low convergence
-uncertainty, no outlier detected by Max-Mixture.}
-\label{fig:baseline}
-\end{figure}
 
 As the middle plot shows, Max-Mixture is still capable of handling noise of
 large bias or spurious loop closures introduced by simulated sensory fault. It
@@ -127,15 +127,17 @@ kernel to make the EM algorithms reliably learn the mobility indicators of the
 landmarks correctly identify the actual moving landmarks. Thus our approach is
 able to obtain the best results in both situations.
 
-\begin{wrapfigure}{r}{0.25\textwidth}
+%\begin{wrapfigure}{r}{0.25\textwidth}
+\begin{figure}
 \begin{center}
 %\framebox[4.0in]{$\;$}
 %\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
- \includegraphics[width=0.25\textwidth]{fig/objective}
+ \includegraphics[width=0.8\columnwidth]{fig/objective}
 \end{center}
 \caption{Learning objective versus iterations}
 \label{fig:objective}
-\end{wrapfigure}
+\end{figure}
+%\end{wrapfigure}
 
 To help verify our learning algorithm, we also provide the plot of our learning
 objective versus learning iterations in the right figure \ref{fig:objective}.
