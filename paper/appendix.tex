@@ -1,27 +1,42 @@
-\newpage
+%\newpage
 \appendix
-\section{SLAM as a Least Squares Problem}
+\subsection{SLAM as a Least Squares Problem}
 \label{appendix:leastsquare}
-For completeness of the paper, we review how to form the SLAM optimization problem as a least squares problem, and we'll follow the derivation in \cite{isam}. Recall that in equation \ref{eq:MAP}, we need to solve a quadratic program, however we may approximate the terms with first order polynomials. For the process term,
+For completeness of the paper, we review how to form the SLAM optimization problem as a least squares problem, following the derivation in \cite{isam}. Recall that in equation \ref{eq:MAP}, we need to solve a quadratic program, however we may approximate the terms with first order polynomials. For the process term,
 \begin{equation}
 \begin{aligned}
-&f_i(x_{i-1}, u_i) - x_i\\
+f_i(x_{i-1}, u_i) - x_i\\
 \approx & {f_i(x_{i-1}^0, u_i)} + F_i^{i-1}\delta x_{i-1} - (x_i^0 + \delta x_i)\\
 =& F_i^{i-1}\delta x_{i-1} + G_i^i\delta x_i - a_i \\
-F_i^{i-1} =& \frac{\partial f_i(x_{i-1}, u_i)}{\partial x_{i-1}}|_{x_{i-1}^0}, \quad G_i^i = -I,\quad a_i = x_i^0 - f_i(x_{i-1}^0, u_i)
 \end{aligned}
 \label{eq:linearProcessTerm}
 \end{equation}
-And for the measurement term:
+where, \cj{does $I$ refer to the matrix identity? define}
+\begin{equation*}
+\begin{aligned}
+F_i^{i-1} &= \frac{\partial f_i(x_{i-1}, u_i)}{\partial x_{i-1}}|_{x_{i-1}^0}, \label{F} \\%\quad
+ G_i^i &= -I, \\% \quad 
+a_i &= x_i^0 - f_i(x_{i-1}^0, u_i).
+\end{aligned}
+\end{equation*}
+For the measurement term:
 \begin{equation}
 \begin{aligned}
-&h_k(x_{i_k}, l_{j_k}) - z_k\\
-\approx &{h_k(x_{i_k}^0, l_{j_k}^0) + H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k}} - z_k\\
-=&{H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k}} - c_k\\
-H_k^{i_k} = \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|&_{(x_{i_k}^0, l_{j_k}^0)},\quad J_k^{j_k} = \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|_{(x_{i_k}^0, l_{j_k}^0)} ,\quad c_k = z_k - h_k(x_{i_k}^0, l_{j_k}^0)
+h_k(x_{i_k}, l_{j_k}) - z_k\\
+\approx & {h_k(x_{i_k}^0, l_{j_k}^0) + H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k}} - z_k\\
+= & {H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k}} - c_k\\
 \end{aligned}
 \label{eq:linearMeasurementTerm}
 \end{equation}
+where, \cj{What is the difference between $H_k^{i_k}$ and $J_k^{j_k}$? Should $J_k^{j_k}$ be with respect to $x_{j_k}$?}
+\begin{equation*}
+\begin{aligned}
+H_k^{i_k} &= \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|_{(x_{i_k}^0, l_{j_k}^0)}, \\ 
+J_k^{j_k} &= \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|_{(x_{i_k}^0, l_{j_k}^0)} , \\
+ c_k &= z_k - h_k(x_{i_k}^0, l_{j_k}^0)
+\end{aligned}
+%\label{eq:linearMeasurementTerm}
+\end{equation*}
 %In our case, 
 %\begin{equation}
 %\begin{aligned}
@@ -37,18 +52,29 @@ H_k^{i_k} = \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|&_{(x_{i_k}^
 
 Therefore, the optimization problem thus becomes
 \begin{equation}
-\delta \theta^* = \operatorname*{arg\,min}_{\delta \theta}\{\sum_{i=1}^M||F_i^{i-1}\delta x_{i-1} + G_i^i\delta x_i - a_i||_{\Gamma_i}^2 + \sum_{k=1}^Kw_{j_k}||v_k(H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k} - c_k)||_{\Sigma_k}^2\}
+\begin{aligned}
+\delta \theta^* = 
+\operatorname*{arg\,min}&_{\delta \theta}\{\sum_{i=1}^M||F_i^{i-1}\delta x_{i-1} 
++ G_i^i\delta x_i - a_i||_{\Gamma_i}^2 \\ 
+&\hspace{-0.5cm}+ \sum_{k=1}^Kw_{j_k}||v_k(H_k^{i_k}\delta x_{i_k} 
+ + J_k^{j_k}\delta l_{j_k} - c_k)||_{\Sigma_k}^2\}
+\end{aligned}
 \end{equation}
 
 To rewrite the Mahalanobis norm, notice that
 \begin{equation}
 ||e||_{\Gamma}^2 = e^T\Gamma^{-1}e = ||\Gamma^{-T/2}e||^2
 \end{equation}
+
 Therefore, we can collect all the Jacobian matrices multiplied by either $\Gamma_i^{-T/2}$ or $v_k w_{j_k}^{1/2}\Sigma_k^{-T/2}$, specifically,
+
 \begin{equation}
 \begin{aligned}
-\delta \theta^* =& \operatorname*{arg\,min}_{\delta \theta}\{\sum_{i=1}^M||\Gamma_i^{-T/2}F_i^{i-1}\delta x_{i-1} + \Gamma_i^{-T/2} G_i^i\delta x_i - \Gamma_i^{-T/2}a_i||^2  \\
-&+\sum_{k=1}^K||v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2} H_k^{i_k}\delta x_{i_k} + v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2}J_k^{j_k}\delta l_{j_k} - v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2}c_k||^2\}
+\delta \theta^* =& \operatorname*{arg\,min}_{\delta \theta}\{&
+\\ &\sum_{i=1}^M||\Gamma_i^{-T/2}F_i^{i-1}\delta x_{i-1} + \Gamma_i^{-T/2} G_i^i\delta x_i - \Gamma_i^{-T/2}a_i||^2  \\
+&+\sum_{k=1}^K||v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2} H_k^{i_k}\delta x_{i_k} 
+\\ &\hspace{0.5cm}+ v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2}J_k^{j_k}\delta l_{j_k} 
+- v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2}c_k||^2\}
 \end{aligned}
 \end{equation}
 

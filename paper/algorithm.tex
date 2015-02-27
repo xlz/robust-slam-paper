@@ -26,7 +26,7 @@ where $K_l$ is the set of measurements of landmark $l$, and $\lambda$ is an assi
 In the \textbf{E step}, we use the estimated latent parameters to obtain minimum variance results with graph optimization methods. We employ the standard approach of graph optimization as in \cite{g2o}, with our augmentation to the objective by introducing landmark mobility indicators $w_{j_k}$ and observation robust kernel $v_k$. Specifically, we want to compute the maximum likelihood estimate of the robust objective
 \begin{equation}
 \begin{aligned}
-X^*, L^* = \operatorname*{arg\,max}_{X, L} & -\log p(X, L, U, Z, W)\\
+X^*, L^* = \operatorname*{arg\,max}_{X, L} & \{ -\log p(X, L, U, Z, W) \}\\
 =\operatorname*{arg\,max}_{X, L} & \{ \sum_{i=1}^M||f_i(x_{i-1}, u_i) - x_i)||^2_{\Gamma_i} \\
 &+ \sum_{k=1}^K w_{j_k}|| v_k (h_k(x_{i_k}, l_{j_k}) - z_k)||^2_{\Sigma_k} \\ 
 &+ \sum_{k=1}^K ||1 - v_k||^2_{\Xi_k} \}
@@ -46,38 +46,46 @@ v_k = \min \left\{ 1, \frac{2\Phi}{\Phi + w_{j_k}\mu_k^T \Sigma_k^{-1} \mu_k}\ri
 
 where $\mu_k = h_k(x_{i_k}, l_{j_k}) - z_k$ is the original prediction error of observation $k$. The DCS kernel is shown to result in an upper bound specified by $\Phi$ for the second part of the objective function. By specifying the upper bound $\Phi$ for all robust edges, $v$ dynamically scales the information matrices of all edges each iteration within the graph optimization process, and replaces the covariances of outliers with large ones making it near uniform. $\Phi$ is chosen as 1 in our implementation as suggested by its author. 
 
-With some derivation\footnote{See Appendix section \ref{appendix:leastsquare} for detail.}, the optimization problem can be formed as a standard least-squares problem
+With some derivation %\footnote{See Appendix section \ref{appendix:leastsquare} for detail.}
+(Appendix section), the optimization problem can be formed as a standard least-squares problem:
+
+\cj{why the subscript covariance $_2$?}
+
 \begin{equation}
 \delta^* = \operatorname*{arg\,max}_\delta||A\delta - b||_2^2
 \label{eq:optimization}
 \end{equation}
 
-\cj{why the subscript $_2$?}
 
 The algorithm, while reliable as shown in experiments in \cite{haehnel03iros}, is possible to have variants modified for real-time updates. In our current implementation we perform batch optimization. We need to rerun the EM algorithm if new measurements are observed. Incremental implementation of the framework is subject for future work.
 
-\subsection{An Incremental Approach}
+\subsection{Incremental Optimization}
 We introduce the theoretical basis for an incremental implementation of the EM algorithm for the problem. As suggested in \cite{neal1998EM}, if the joint probability is fully factorized with regards to the examples, as is in our case, we can use the following algorithm for update in the E and M step while preserving the correctness:
 
-\cj{fix indention}
 \paragraph{E step} 
 In equation \ref{eq:MAP}, if we have one new observation $z_{K+1}$ at time $K+1$, then
+
 \begin{equation}
 \begin{aligned}
-x_{i_{K+1}}^*, l_{j_{K+1}}^* \\
+x_{i_{K+1}}^*, l_{j_{K+1}}^*  
 &= \operatorname*{arg\,max}_{ x_{i_{K+1}}, l_{j_{K+1}}} \{ 
 \sum_{i}||f_i(x_{i-1}, u_i) - x_i)||^2_{\Gamma_i} \\
-&+ \sum_{k=1}^{K+1} w_{j_k}||v_k(h_k(x_{i_k}, l_{j_k}) - z_k)||^2_{\Sigma_k} \\
-&+ \sum_{k=1}^{K+1}||1-v_k||^2_{\Xi_k} \}
+&\hspace{0.5cm}+ \sum_{k=1}^{K+1} w_{j_k}||v_k(h_k(x_{i_k}, l_{j_k}) - z_k)||^2_{\Sigma_k} \\ 
+&\hspace{0.5cm}+ \sum_{k=1}^{K+1}||1-v_k||^2_{\Xi_k} \}
+%&= \operatorname*{arg\,max}_{ x_{i_{K+1}}, l_{j_{K+1}}} \{ 
+%\sum_{i}||f_i(x_{i-1}, u_i) - x_i)||^2_{\Gamma_i} \\
+%&+ \sum_{k=1}^{K+1} w_{j_k}||v_k(h_k(x_{i_k}, l_{j_k}) - z_k)||^2_{\Sigma_k} \\
+%&+ \sum_{k=1}^{K+1}||1-v_k||^2_{\Xi_k} \}
 \end{aligned}
 \label{eq:facMAP}
 \end{equation}
-And equation \ref{eq:facMAP} can also be written in the form of \ref{eq:optimization}, but with less parameters. So, the incremental E step becomes
+
+and equation \ref{eq:facMAP} can also be written in the form of \ref{eq:optimization}, but with less parameters. So, the incremental E step becomes
 \begin{itemize}
 \item Choose one observation term $k$ to be updated, such as $k = K+1$
 \item Set $x_{i_p}^{(t)} = x_{i_p}^{(t-1)}, l_{j_p}^{(t)} = l_{j_p}^{(t-1)}$ for $p \neq k$
 \item Set $x_{i_k}, l_{j_k}$ according to equation \ref{eq:MAP} in equation \ref{eq:optimization}'s form.
 \end{itemize}
-\paragraph{M step:} The same step as introduced in section \ref{sec:traditionalEM}, using the derivation in equation \ref{eq:wk}.
+\paragraph{M step} The same step as introduced in section \ref{sec:traditionalEM}, using the derivation in equation \ref{eq:wk}.
 
 With this incremental EM algorithm, the E step can be much faster since the optimization problem has less parameters. Also, after several iterations, we may use the model to update the parameters by adding more observations, without the need to run the EM algorithm on all the observations again.
