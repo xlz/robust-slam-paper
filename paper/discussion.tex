@@ -1,4 +1,4 @@
-\section{Future Work}
+\section{DISCUSSION AND FUTURE WORK}
 
 We have shown the basic efficacy of our approach, but the evaluation is far from being comprehensive. The performance under different percentage of randomly generated outliers, and different sources and types of datasets including 3-D datasets are needed for a complete understanding of the performance in our approach. Due to the different nature of source of errors of moving landmarks than spurious loop closure, the effect of different numbers of observations associated with landmarks also needs to be taken into account for systematic evaluation.
 
@@ -6,7 +6,7 @@ We have examined the theoretical basis for the incremental variant of the EM alg
 
 In our formulation, there are pre-defined parameters $\lambda$ for penalizing against removing too many landmarks, which is essentially a decision boundary, and $\Phi$ for the robust kernel. The appropriate method to choose the parameters and their sensitivity to environmental factors and dataset characteristics need to be examined. There are multiple robust SLAM methods proposing different penalty terms which derive into these parameters. A comparison of the alternative choices of penalty terms is also necessary.
 
-\section{Conclusion}
+\section{CONCLUSION}
 
 This paper proposed a new method to characterize and identify the mobility of potentially moving landmarks by using the EM algorithms with robust kernel. The feasibility of the proposed approach was shown and evaluated on synthesized datasets from a standard dataset. We compared with existing state-of-the-art methods and showed that observation based robust methods are unable to handle moving landmarks while EM alone without robust kernel does not deal with small continuous movement robustly. We also propose an incremental variant of our approach which will be suitable for real-time incremental update in future implementation.
 
