@@ -12,15 +12,14 @@ uncertainty, no outlier detected by Max-Mixture.}
 
 We implemented our method as discussed previously and compared the result with
 various alternative approaches. Our implementation is based on the graph
-optimization framework g2o \cite{g2o}, and we programmed a plug-in type library
+optimization framework g2o~\cite{g2o}, and we programmed a plug-in type library
 in C++ to represent our modified objective function while reusing the Gauss-Newton
 optimization functionality. The type library exposes properties of the edges including
 the error metric, reweighted information matrix, and robust Mahalanobis distance function.
 
 \subsection{Datasets}
 
-The first dataset is the commonly compared landmark-based dataset Victoria Park released with iSAM
-\cite{isam} and apply different types of simulated corruption to the dataset to
+The first dataset is the commonly compared landmark-based dataset Victoria Park released with iSAM~\cite{isam} and apply different types of simulated corruption to the dataset to
 generate multiple synthesized datasets to evaluate the effect on different
 approaches.  For the purpose of evaluating performance against moving
 landmarks, several other commonly used datasets are not suitable because they
@@ -28,15 +27,16 @@ are pose-only graphs without landmarks. The Victoria Park dataset of 2-D
 odometry and landmark observations contains 6969 robot poses, 6968 odometry
 measurements, 151 landmarks, and 3640 landmark measurements obtained.
 
+\cj{in-door $\rightarrow$ indoor}
 The second dataset is based on a set of real world data collected in crowded
-environment at the Alcazar of Seville with a lot of tourists.\cite{iros14-frog}
+environment at the Alcazar of Seville with a lot of tourists~\cite{iros14-frog}.
 The original datasets provide wheel odometry, stereo images, and laser scans.
 In the in-door GPS denied environment, the provided ground truth map and
 trajectory are built using a non-linear batch optimization-based SLAM method
 with an approximate accuracy of 20 cm. We extract potentially moving landmarks
-from a in-door subset of this dataset through a standard pipeline of feature
+from a indoor subset of this dataset through a standard pipeline of feature
 detection and extraction, feature correspondence, and stereo estimation of
-keypoint depth.  Due to lack of visual detection of loop closure, we also add
+keypoint depth.\cj{do you have a citation for this pipeline? or some implementation detail, like a C++ implementation using OpenCV libararies?}  Due to lack of visual detection of loop closure, we also add
 in a loop closure obtained from laser scans instead of image data at the
 start-end point. This dataset tests the typical scenario of visual SLAM with
 wheel odometry. The extracted dataset consists of 4892 robot poses, 5808
@@ -45,7 +45,7 @@ measurements, and 13454 measurements.
 \subsection{Prior Methods with Moving Landmarks}
 
 In the first test, we evaluate the performance of the state-of-the-art robust
-SLAM method, the Max-Mixture algorithm, given dynamic landmark measurements.
+SLAM method, a implementation of Max-Mixture~\cite{mm}, given dynamic landmark measurements.
 Max-Mixture is a robust extension to classical graph SLAM using Gaussian
 mixture in factor representation, that is, $ x_i = \sum_c \phi_c
 \mathcal{N}(\mu_c, \Sigma_c)$ for component $c$ and weight $\phi_c$, with
@@ -60,7 +60,7 @@ landmark which has the most observations associated in the dataset, and study
 the different effects of the perturbations on the optimal estimate of the
 trajectory and the map of all landmarks obtained by Max-Mixture graph SLAM. The
 Victoria Park dataset contains 2-D odometry and landmark observations. As shown
-in figure \ref{fig:baseline} the left plot is the control group without
+in Figure \ref{fig:baseline} the left plot is the control group without
 perturbation, and is accurate to the ground truth. A single southward bias is
 applied to all observations of the landmark in the middle plot, simulating
 sensory outliers. A temporally increasing bias is applied to all observations
@@ -78,7 +78,7 @@ plausible estimate of robot trajectory and the map, however robust SLAM methods
 which assume stationary landmarks will average over a sum of different
 reference frames and lead to wrong conclusions.
 
-\subsection{Our Method Compared with Prior Methods}
+\subsection{Comparison with Prior Methods}
 
 To benchmark the robustness of the proposed approach and to show its
 correctness and feasibility, we use the Victoria Park dataset that has been
@@ -91,9 +91,6 @@ observations associated with this particular landmark in the dataset. We expect
 the more observations there are on a landmark, the greater its movement would
 corrupt the final optimization results and the more possible that existing
 robust SLAM methods would fail.
-
-We compare the results of Dynamic Covariance Scaling robust kernel as discussed in our
-formulation, and also the SLAM with EM approach proposed in \cite{rogers2010slam}.
 
 \begin{figure}[ht]
 \centering
@@ -110,25 +107,26 @@ formulation, and also the SLAM with EM approach proposed in \cite{rogers2010slam
 \end{minipage}
 \end{figure}
 
-Figure \ref{fig:small-movement} shows the results for DCS, normal EM, and our
+We compare the results of Dynamic Covariance Scaling robust kernel as discussed in our
+formulation, and also the SLAM with EM approach proposed in \cite{rogers2010slam}.  Figure \ref{fig:small-movement} shows the results for DCS, standard EM, and our
 approach. As shown in the figure, robust observations alone are unable to
-handle moving landmarks. This is because observation based robust methods do
-not characterize the mobility of the landmark and its effect on associated
-observations and assume independence between observations which is not the case
-for moving landmarks. A moving landmark will cause associated observations to
+handle moving landmarks. Because observation-based robust methods do
+not characterize the mobility of the landmark, its effect on associated
+observations and assume independence between observations, which is not the case for moving landmarks. A moving landmark will cause associated observations to
 be inconsistent in a plausible way such that a subgroup of the observations
 might be able to converge to a local minimum but the rest of the observations
 would distort the result elsewhere. 
 
 Normal SLAM with EM was proposed in \cite{rogers2010slam} for datasets with
 very large movement. Their formulation is similar with ours except it is
-without the robust factor $v_k$.  As shown in figure \ref{fig:small-movement},
+without the robust factor $v_k$.  As shown in Figure \ref{fig:small-movement},
 the resulting trajectory is distorted. One explanation for this is from the
-charactersstics of the datasets.  In their paper, they investigated datasets
+characteristics of the datasets.  In their paper, they investigated datasets
 containing landmarks moved from one room to another room over a long period of
-time, which is not the case in the dataset presented in figure
-\ref{fig:small-movement} where the motion of the landmark is relatively small
-and continuous. In fact, in figure \ref{fig:large-movement} the motion of the
+time.%, which is not the case in the Victoria Part dataset. 
+%the dataset presented in figure \ref{fig:small-movement} 
+Such long-duration mobility is not the case in the Victoria Part dataset, where the motion of the landmark is relatively small and continuous. In fact, %in figure \ref{fig:large-movement} 
+the motion of the
 corrupted landmark is doubled and normal EM is able to learn the mobility
 correctly.
 
@@ -141,8 +139,8 @@ kernel to make the EM algorithms reliably learn the mobility indicators of the
 landmarks correctly identify the actual moving landmarks. Thus our approach is
 able to obtain the best results in both situations.
 
-In figure \ref{fig:alcazar-robust} and \ref{fig:alcazar-movable-robust}, the
-result also shows additionaly comparison of different methods on the Alcazar of
+In Figures \ref{fig:alcazar-robust} and \ref{fig:alcazar-movable-robust}, the
+result also shows additionally comparison of different methods on the Alcazar of
 Seville dataset. As can be seen, the trajectory estimation obtained with only
 robust observations using DCS kernel is significantly distorted. Our method is
 able to recover the trajectory approximately. The estimated trajectory does not
