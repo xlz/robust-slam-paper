@@ -36,7 +36,8 @@ trajectory are built using a non-linear batch optimization-based SLAM method
 with an approximate accuracy of 20 cm. We extract potentially moving landmarks
 from a indoor subset of this dataset through a standard pipeline of feature
 detection and extraction, feature correspondence, and stereo estimation of
-keypoint depth implemented with OpenCV~\cite{opencv} and ROS~\cite{ros}.\cj{do you have a citation for this pipeline? or some implementation detail, like a C++ implementation using OpenCV libararies? xlz: citations add, but how to cite OpenCV?}  Due to lack of visual detection of loop closure, we also add
+keypoint depth implemented with OpenCV~\cite{opencv} and ROS~\cite{ros}.%resolved\cj{do you have a citation for this pipeline? or some implementation detail, like a C++ implementation using OpenCV libararies? xlz: citations add, but how to cite OpenCV?}  
+Due to lack of visual detection of loop closure, we also add
 in a loop closure obtained from laser scans instead of image data at the
 start-end point. This dataset tests the typical scenario of visual SLAM with
 wheel odometry. The extracted dataset consists of 4892 robot poses, 5808
