@@ -11,11 +11,11 @@ f_i(x_{i-1}, u_i) - x_i\\
 \end{aligned}
 \label{eq:linearProcessTerm}
 \end{equation}
-where, \cj{does $I$ refer to the matrix identity? define}
+where, \cj{does $I$ refer to the matrix identity? define xlz: yes}
 \begin{equation*}
 \begin{aligned}
 F_i^{i-1} &= \frac{\partial f_i(x_{i-1}, u_i)}{\partial x_{i-1}}|_{x_{i-1}^0}, \label{F} \\%\quad
- G_i^i &= -I, \\% \quad 
+ G_i^i &= -I, \text{(Identity matrix)}\\% \quad 
 a_i &= x_i^0 - f_i(x_{i-1}^0, u_i).
 \end{aligned}
 \end{equation*}
@@ -28,11 +28,11 @@ h_k(x_{i_k}, l_{j_k}) - z_k\\
 \end{aligned}
 \label{eq:linearMeasurementTerm}
 \end{equation}
-where, \cj{What is the difference between $H_k^{i_k}$ and $J_k^{j_k}$? Should $J_k^{j_k}$ be with respect to $x_{j_k}$?}
+where, \cj{What is the difference between $H_k^{i_k}$ and $J_k^{j_k}$? Should $J_k^{j_k}$ be with respect to $x_{j_k}$? xlz: fixed, the denominator of $J$ should be $l_{j_k}$}
 \begin{equation*}
 \begin{aligned}
 H_k^{i_k} &= \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|_{(x_{i_k}^0, l_{j_k}^0)}, \\ 
-J_k^{j_k} &= \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|_{(x_{i_k}^0, l_{j_k}^0)} , \\
+J_k^{j_k} &= \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial l_{j_k}}|_{(x_{i_k}^0, l_{j_k}^0)} , \\
  c_k &= z_k - h_k(x_{i_k}^0, l_{j_k}^0)
 \end{aligned}
 %\label{eq:linearMeasurementTerm}

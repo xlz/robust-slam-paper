@@ -49,10 +49,10 @@ where $\mu_k = h_k(x_{i_k}, l_{j_k}) - z_k$ is the original prediction error of 
 With some derivation %\footnote{See Appendix section \ref{appendix:leastsquare} for detail.}
 (Appendix section), the optimization problem can be formed as a standard least-squares problem:
 
-\cj{why the subscript covariance $_2$?}
+\cj{why the subscript covariance $_2$? xlz: removed $_2$, this is just plain L2-norm}
 
 \begin{equation}
-\delta^* = \operatorname*{arg\,max}_\delta||A\delta - b||_2^2
+\delta^* = \operatorname*{arg\,max}_\delta||A\delta - b||^2
 \label{eq:optimization}
 \end{equation}
 

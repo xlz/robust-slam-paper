@@ -12,7 +12,7 @@
 \end{figure}
 %\end{wrapfigure}
 
-Following \cite{isam} we formulate the SLAM problem in graphical models as in Figure \ref{fig:model}. Specifically, the robot states are denoted by $X = \{x_i\}$ with $i \in 0, \dots T$, the landmarks by $L = \{l_j\}$ with $j \in 1,\dots, N$, the control inputs by $U = \{u_i\}$ for $i \in 1,\dots, T$ and the landmark measurements by $Z = \{z_k\}$ with $k \in 1, \dots, K$. In addition to the classical graph SLAM formulation, we augment the representation of landmarks with latent parameters $W = \{w_j\}$ with $j \in 1, \dots, N$ \cj{is W for data associateion? if so, this should be stated explicitly}. Then the joint probability of all variables and measurements are given by
+Following \cite{isam} we formulate the SLAM problem in graphical models as in Figure \ref{fig:model}. Specifically, the robot states are denoted by $X = \{x_i\}$ with $i \in 0, \dots T$, the landmarks by $L = \{l_j\}$ with $j \in 1,\dots, N$, the control inputs by $U = \{u_i\}$ for $i \in 1,\dots, T$ and the landmark measurements by $Z = \{z_k\}$ with $k \in 1, \dots, K$. In addition to the classical graph SLAM formulation, we augment the representation of landmarks with latent parameters $W = \{w_j\}$ with $j \in 1, \dots, N$ \cj{is W for data associateion? if so, this should be stated explicitly xlz: how about this?}. Particularly, $W$ models the mobility of landmarks through which corrupted measurements associated with moving landmarks are suitably eliminated. Then the joint probability of all variables and measurements are given by
 
 %\begin{equation}
 \begin{multline}
@@ -46,11 +46,12 @@ z_k &= h_k(x_{i_k}, l_{j_k}) + \nu_k
 
 where $\omega_i$ and $\nu_k$ are noise terms which follow zero-mean normal distribution with covariance matrices $\Gamma_i$ and $\Sigma_k$. With this formulation, the second part of the joint probability \ref{eq:jointProb} is augmented with the mobility indicator. In addition we also apply a robust kernel to the observation term, then the formulation as a whole is given as:
 
-\cj{need to reformat exp() to be within margin, e is placeholder}
+\cj{need to reformat exp() to be within margin, e is placeholder, xlz: fixed}
 %\begin{equation}
 \begin{multline}
-P(z_k|x_{i_k}, l_{j_k}, w_{j_k})\propto \\
- e^{(-w_{j_k} (v_k(z_k - h_k(x_{i_k}, l_{j_k})))^T \Sigma_k^{-1} (v_k(z_k - h_k(x_{i_k}, l_{j_k}))) }.
+P(z_k|x_{i_k}, l_{j_k}, w_{j_k})\propto \exp(-w_{j_k} \tilde{\mu}_k^T \Sigma_k^{-1} \tilde{\mu}_k),\\
+ \tilde{\mu}_k = v_k(h_k(x_{i_k}, l_{j_k}) - z_k)
+ %e^{(-w_{j_k} (v_k(z_k - h_k(x_{i_k}, l_{j_k})))^T \Sigma_k^{-1} (v_k(z_k - h_k(x_{i_k}, l_{j_k}))) }.
  %\exp(-w_{j_k} (v_k(z_k - h_k(x_{i_k}, l_{j_k})))^T \Sigma_k^{-1} (v_k(z_k - h_k(x_{i_k}, l_{j_k}))) ).
 \label{eq:sensor}
 \end{multline}

@@ -19,7 +19,7 @@ the error metric, reweighted information matrix, and robust Mahalanobis distance
 
 \subsection{Datasets}
 
-We use the commonly compared dataset Victoria Park released with iSAM
+The first dataset is the commonly compared landmark-based dataset Victoria Park released with iSAM
 \cite{isam} and apply different types of simulated corruption to the dataset to
 generate multiple synthesized datasets to evaluate the effect on different
 approaches.  For the purpose of evaluating performance against moving
@@ -28,9 +28,23 @@ are pose-only graphs without landmarks. The Victoria Park dataset of 2-D
 odometry and landmark observations contains 6969 robot poses, 6968 odometry
 measurements, 151 landmarks, and 3640 landmark measurements obtained.
 
+The second dataset is based on a set of real world data collected in crowded
+environment at the Alcazar of Seville with a lot of tourists.\cite{iros14-frog}
+The original datasets provide wheel odometry, stereo images, and laser scans.
+In the in-door GPS denied environment, the provided ground truth map and
+trajectory are built using a non-linear batch optimization-based SLAM method
+with an approximate accuracy of 20 cm. We extract potentially moving landmarks
+from a in-door subset of this dataset through a standard pipeline of feature
+detection and extraction, feature correspondence, and stereo estimation of
+keypoint depth.  Due to lack of visual detection of loop closure, we also add
+in a loop closure obtained from laser scans instead of image data at the
+start-end point. This dataset tests the typical scenario of visual SLAM with
+wheel odometry. The extracted dataset consists of 4892 robot poses, 5808
+measurements, and 13454 measurements.
+
 \subsection{Prior Methods with Moving Landmarks}
 
-In this test, we evaluate the performance of the state-of-the-art robust
+In the first test, we evaluate the performance of the state-of-the-art robust
 SLAM method, the Max-Mixture algorithm, given dynamic landmark measurements.
 Max-Mixture is a robust extension to classical graph SLAM using Gaussian
 mixture in factor representation, that is, $ x_i = \sum_c \phi_c
@@ -127,21 +141,26 @@ kernel to make the EM algorithms reliably learn the mobility indicators of the
 landmarks correctly identify the actual moving landmarks. Thus our approach is
 able to obtain the best results in both situations.
 
-%\begin{wrapfigure}{r}{0.25\textwidth}
-\begin{figure}
-\begin{center}
-%\framebox[4.0in]{$\;$}
-%\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
- \includegraphics[width=0.8\columnwidth]{fig/objective}
-\end{center}
-\caption{Learning objective versus iterations}
-\label{fig:objective}
-\end{figure}
-%\end{wrapfigure}
+In figure \ref{fig:alcazar-robust} and \ref{fig:alcazar-movable-robust}, the
+result also shows additionaly comparison of different methods on the Alcazar of
+Seville dataset. As can be seen, the trajectory estimation obtained with only
+robust observations using DCS kernel is significantly distorted. Our method is
+able to recover the trajectory approximately. The estimated trajectory does not
+completely converge on the ground truth trajectory due to less than full
+coverage of extracted landmarks and limited accuracy in depth estimation.
 
-To help verify our learning algorithm, we also provide the plot of our learning
-objective versus learning iterations in the right figure \ref{fig:objective}.
-The algorithm almost converges after 2 iterations, mostly because the number of
-outliers introduced is relatively small compared to the total number of
-landmarks, and the graph optimization step eliminates the majority of the
-energy besides that caused by wrong identification of landmark mobility.
+\begin{figure}[ht]
+\centering
+\begin{minipage}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{fig/alcazar-robust}
+  \caption{Estimation with only robust observations (DCS) on the Alcazar of Seville dataset. Background is the ground truth map.}
+  \label{fig:alcazar-robust}
+\end{minipage}
+\quad
+\begin{minipage}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{fig/alcazar-movable-robust}
+  \caption{Estimation with our method on the Alcazar of Seville dataset.}
+  \label{fig:alcazar-movable-robust}
+\end{minipage}
+\end{figure}
+
