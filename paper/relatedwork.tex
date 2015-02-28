@@ -4,44 +4,44 @@ Graph SLAM has multiple highly efficient optimization solutions.
 iSAM \cite{isam} converts the graph SLAM maximum likelihood estimate into a
 non-linear least squares optimization problem.  The factor graph is incrementally solved by numerical methods, obtaining real-time performance and Bayesian smoothing accuracy. These optimization techniques show the effectiveness of the factor graph formulation of the SLAM problem, and we base our formulation on similar formulations.
 
-\cj{let's also look at Wolf and Sukhatme, http://robotics.usc.edu/publications/media/uploads/pubs/392.pdf xlz: fixed}
+%resolved\cj{let's also look at Wolf and Sukhatme, http://robotics.usc.edu/publications/media/uploads/pubs/392.pdf xlz: fixed}
 
-A known solution\cite{wolf05} to SLAM in dynamic environments is to maintain two occupancy
-maps modeling the dynamic and static parts of the environment. By
+A known solution to SLAM in dynamic environments is to maintain two occupancy
+maps modeling the dynamic and static parts of the environment \cite{wolf05}. By
 differentiating dynamic and static parts of the environment with different
 representation, this method is capable of mapping and localization in dynamic
 environments over time. An alternative approach of dealing with
-moving objects in dynamic environmente is combining SLAM with
-object detection and tracking. \cite{wang2003online} proposes a Bayesian
+moving objects in dynamic environments is combining SLAM with
+object detection and tracking. Wang et al. \cite{wang2003online} proposed a Bayesian
 framework to solve the SLAM together with object motion modeling by
 sophisticated object detection and tracking and data association algorithms.
 In this approach, object detection and tracking is used as a preprocessing
-front-end to filter out moving objects. If the goal is just to estimate the
+front-end to filter out moving objects. 
+\cj{Is the next sentence necessary?}
+If the goal is just to estimate the
 robot trajectory and the still part of the map for future localization, there
 are possible solutions without maintaining motion models of individual moving objects.
 
+\cj{comment: use ' \~ ' to bind citations to text such that they are on the same line}
 Robust SLAM techniques have been proposed to solve front-end outlier problems
 without relying on pre-filtering. Some use robust objective functions or robust
-representation of observations. Dynamic Covariance Scaling\cite{DCS} adds a
+representation of observations. Dynamic Covariance Scaling~\cite{DCS} adds a
 robust kernel factor to regularize the Mahalanobis errors in the Gaussian
-distributions of landmark observations.  Max-Mixture\cite{mm} enhances factor
-representation with a mixture of Gaussians instead of a single spatial Gaussian
-distribution. This kind of approaches still assume sources of errors being
-mostly perceptual aliasing in wrong loop closures, without regard to
-environmental movement.  Given dynamic environments they will have difficulty
-in detecting and handling the movement of landmarks.
+distributions of landmark observations.  Max-Mixture~\cite{mm} enhances factor
+potentials with a clever representation for mixtures of Gaussians in place of a unimodal Gaussian distribution. This kind of approaches still assume sources of errors being mostly perceptual aliasing in wrong loop closures, without regard to
+environmental movement.  Unless modeled explicitly in factor potentials, these methods will have difficulty in handling the movement of landmarks.
 
-The other approach to handling front-end outlier and dynamic elements is
-incorporating the problem of identifying mobility as part of the back-end graph
-optimization framework.  \cite{haehnel03iros} and \cite{rogers2010slam} extend
-the graphical model with a latent indicator variable for each landmark to
-indicate whether it is mobile and use EM algorithms to iteratively infer those
-additional latent variables in the graphical model and estimate the optimal
-solution in SLAM augmented with the indicators. The switchable
+%Given dynamic environments they will have difficulty in detecting and handling the movement of landmarks.
+
+%The other approach to handling 
+Front-end outliers and dynamic elements can also be addressed through identifying mobility as part of the back-end graph
+optimization framework.  Haehnel et al. \cite{haehnel03iros} and Rogers et al. \cite{rogers2010slam} extend graphical model formulations with a latent indicator variable to infer whether a landmark is mobile. EM algorithms are used to iteratively infer these
+latent landmark mobility variables in the graphical model and estimate the optimal SLAM solution.% in SLAM augmented with the indicators. 
+The switchable
 constraints \cite{Switchable12} approach allows the optimizer to naturally
 change the topological structure of the problem during the optimization itself
 using switch variables as a multiplicative scaling factor on the information
 matrix associated with that constraint. However, these EM based algorithms lack
-the robustness provided by previous techniques.  And observation based
+the robustness provided by previous techniques.  \cj{Can we discuss why this next statement is true?}  Further, observation-based
 indicators will not be able to characterize the mobility of each landmark which
 associates with multiple observations.
