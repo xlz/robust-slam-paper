@@ -17,12 +17,12 @@ framework to solve the SLAM together with object motion modeling by
 sophisticated object detection and tracking and data association algorithms.
 In this approach, object detection and tracking is used as a preprocessing
 front-end to filter out moving objects. 
-\cj{Is the next sentence necessary?}
-If the goal is just to estimate the
-robot trajectory and the still part of the map for future localization, there
-are possible solutions without maintaining motion models of individual moving objects.
+\cj{Is the next sentence necessary? xlz: no.}
+%If the goal is just to estimate the
+%robot trajectory and the still part of the map for future localization, there
+%are possible solutions without maintaining motion models of individual moving objects.
 
-\cj{comment: use ' \~ ' to bind citations to text such that they are on the same line}
+\cj{comment: use ' \~ ' to bind citations to text such that they are on the same line. xlz: will manually fix it when seeing more}
 Robust SLAM techniques have been proposed to solve front-end outlier problems
 without relying on pre-filtering. Some use robust objective functions or robust
 representation of observations. Dynamic Covariance Scaling~\cite{DCS} adds a
@@ -42,6 +42,6 @@ constraints \cite{Switchable12} approach allows the optimizer to naturally
 change the topological structure of the problem during the optimization itself
 using switch variables as a multiplicative scaling factor on the information
 matrix associated with that constraint. However, these EM based algorithms lack
-the robustness provided by previous techniques.  \cj{Can we discuss why this next statement is true?}  Further, observation-based
-indicators will not be able to characterize the mobility of each landmark which
-associates with multiple observations.
+the robustness provided by previous techniques. \cj{Can we discuss why this next statement is true? xlz: It should be true by definition. This looks clarified?} Further, an observation-based
+indicator only models the observation it associates with and will not characterize the
+mobility of landmarks which associate with multiple observations.

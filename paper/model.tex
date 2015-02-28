@@ -12,8 +12,9 @@
 \end{figure}
 %\end{wrapfigure}
 
-Following \cite{isam} we formulate the SLAM problem in graphical models as in Figure \ref{fig:model}. Specifically, the robot states (as position and orientation over time in map coordinates) are denoted by $X = \{x_i\}$ with $i \in 0, \dots T$, the landmark locations in map coordinates by $L = \{l_j\}$ with $j \in 1,\dots, N$, the control inputs for movement by $U = \{u_i\}$ for $i \in 1,\dots, T$ and the landmark measurements in robot coordinates by $Z = \{z_k\}$ with $k \in 1, \dots, K$. In addition to the classical graph SLAM formulation, we augment the representation of landmarks with latent parameters $W = \{w_j\}$ with $j \in 1, \dots, N$. \cj{is W for data associateion? if so, this should be stated explicitly xlz: how about this? cjenkins: better, i added a little more} In considering dynamic environments, $W$ models the mobility of each landmark and robustify the observation term of the model in Equation \ref{eq:sensor}.  Through $W$, corrupted measurements associated with moving landmarks are suitably eliminated as outliers from the mapping process. We state the joint probability of all variables and measurements as:
-
+Following \cite{isam} we formulate the SLAM problem in graphical models as in Figure \ref{fig:model}. Specifically, the robot states (as position and orientation over time in map coordinates) are denoted by $X = \{x_i\}$ with $i \in 0, \dots T$, the landmark locations in map coordinates by $L = \{l_j\}$ with $j \in 1,\dots, N$, the control inputs for movement by $U = \{u_i\}$ for $i \in 1,\dots, T$ and the landmark measurements in robot coordinates by $Z = \{z_k\}$ with $k \in 1, \dots, K$. In addition to the classical graph SLAM formulation, we augment the representation of landmarks with latent parameters $W = \{w_j\}$ with $j \in 1, \dots, N$.
+%resolved \cj{is W for data associateion? if so, this should be stated explicitly xlz: how about this? cjenkins: better, i added a little more}
+In considering dynamic environments, $W$ models the mobility of each landmark and robustify the observation term of the model in Equation \ref{eq:sensor}.  Through $W$, corrupted measurements associated with moving landmarks are suitably eliminated as outliers from the mapping process. We state the joint probability of all variables and measurements as:
 %\begin{equation}
 \begin{multline}
 P(X, L, U, Z, W) \propto  \\
@@ -46,7 +47,7 @@ z_k &= h_k(x_{i_k}, l_{j_k}) + \nu_k
 
 where $\omega_i$ and $\nu_k$ are noise terms which follow zero-mean normal distribution with covariance matrices $\Gamma_i$ and $\Sigma_k$. With this formulation, the second part of the joint probability \ref{eq:jointProb} is augmented with the mobility indicator. In addition we also apply a robust kernel to the observation term, then the formulation as a whole is given as:
 
-\cj{need to reformat exp() to be within margin, e is placeholder, xlz: fixed, cjenkins: added aligned}
+%resolved \cj{need to reformat exp() to be within margin, e is placeholder, xlz: fixed, cjenkins: added aligned}
 \begin{equation}
 \begin{aligned}
 P(z_k|x_{i_k}, l_{j_k}, w_{j_k})\propto \exp(-w_{j_k} \tilde{\mu}_k^T \Sigma_k^{-1} \tilde{\mu}_k),\\

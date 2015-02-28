@@ -6,7 +6,8 @@ Graph SLAM formulates it as an inference problem
 on a factor graph. In the factor graph, spatial measurements are the observed factor nodes as constraints between variable nodes of landmark locations and robot poses. The goal of
 the inference problem is to obtain the maximum likelihood estimate of the
 joint probability of the graph, which becomes the geometrically consistent
-estimate of the robot's trajectory and the map. This maximum likelihood estimate on factor graphs can be solved by belief propagation \cj{perhaps cite Weiss et al. xlz: which one?}, or more recently, by numerical methods after converting into a nonlinear squares \cite{isam,g2o,olson2006fast}. %resolved\cj{cite iSAM? xlz: fixed}, e.g. iSAM\cite{isam} and g2o\cite{g2o}.
+estimate of the robot's trajectory and the map. This maximum likelihood estimate on factor graphs can be solved by belief propagation \cite{weiss}% resolved \cj{perhaps cite Weiss et al. xlz: which one?}
+, or more recently, by numerical methods after converting into a nonlinear squares \cite{isam,g2o,olson2006fast}. %resolved\cj{cite iSAM? xlz: fixed}, e.g. iSAM\cite{isam} and g2o\cite{g2o}.
 
 Problems arise in SLAM loop closing when factors incorrectly link unrelated variable nodes.  Such false positives effectively create wormholes between spatially distant locations and, thus, collapse and distort the map geometry. In pose graphs, loop closures specify spatial connections between arbitrary poses representing previously visited locations.  However, front-end filtering systems  often wrongly connect random poses as loop closures.  In landmark-based graphs, the data association process can also easily obtain wrong visual feature correspondences, connecting landmarks to the wrong poses. This necessitates robust approaches to SLAM.
 

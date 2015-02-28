@@ -5,7 +5,6 @@ Following the notation in section \ref{sec:model}, we introduce the Expectation 
 \label{sec:traditionalEM}
 
 As described in \cite{rogers2010slam}, in Equation \ref{eq:sensor}, the hidden variables $w_k$ must be estimated from multiple observations of each landmark. In the \textbf{M step}, we select the optimal $w$ which maximizes the joint likelihood. However there is a trivial solution to the likelihood maximization which sets $w_k = 0$ for all $k$, we penalize the log-likelihood objective in Equation \ref{eq:lagrangeMultiplier} with Lagrange multiplier which act as priors of the latent landmark mobility variables:
-
 \begin{multline}
 %\begin{aligned}
 \mathrm{Obj}(Z, X, L, W) = \\ \sum_k \left[ -w_{j_k}(\tilde{\mu}^T_k\Sigma_k^{-1}\tilde{\mu}_k) \right] - \frac{1}{2}\lambda(1 - w)^T(1 - w)
@@ -48,7 +47,6 @@ where $\mu_k = h_k(x_{i_k}, l_{j_k}) - z_k$ is the original prediction error of 
 
 With some derivation %\footnote{See Appendix section \ref{appendix:leastsquare} for detail.}
 (Appendix section), the optimization problem can be formed as a standard least-squares problem:
-
 %resolved\cj{why the subscript covariance $_2$? xlz: removed $_2$, this is just plain L2-norm}
 
 \begin{equation}

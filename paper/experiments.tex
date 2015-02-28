@@ -19,7 +19,7 @@ the error metric, reweighted information matrix, and robust Mahalanobis distance
 
 \subsection{Datasets}
 
-The first dataset is the commonly compared landmark-based dataset Victoria Park released with iSAM~\cite{isam} and apply different types of simulated corruption to the dataset to
+The first dataset is the commonly compared landmark-based dataset Victoria Park released with iSAM~\cite{isam}. We apply different types of simulated corruption to the dataset to
 generate multiple synthesized datasets to evaluate the effect on different
 approaches.  For the purpose of evaluating performance against moving
 landmarks, several other commonly used datasets are not suitable because they
@@ -27,16 +27,16 @@ are pose-only graphs without landmarks. The Victoria Park dataset of 2-D
 odometry and landmark observations contains 6969 robot poses, 6968 odometry
 measurements, 151 landmarks, and 3640 landmark measurements obtained.
 
-\cj{in-door $\rightarrow$ indoor}
+% resolved \cj{in-door $\rightarrow$ indoor}
 The second dataset is based on a set of real world data collected in crowded
 environment at the Alcazar of Seville with a lot of tourists~\cite{iros14-frog}.
 The original datasets provide wheel odometry, stereo images, and laser scans.
-In the in-door GPS denied environment, the provided ground truth map and
+In the indoor GPS denied environment, the provided ground truth map and
 trajectory are built using a non-linear batch optimization-based SLAM method
 with an approximate accuracy of 20 cm. We extract potentially moving landmarks
 from a indoor subset of this dataset through a standard pipeline of feature
 detection and extraction, feature correspondence, and stereo estimation of
-keypoint depth.\cj{do you have a citation for this pipeline? or some implementation detail, like a C++ implementation using OpenCV libararies?}  Due to lack of visual detection of loop closure, we also add
+keypoint depth implemented with OpenCV~\cite{opencv} and ROS~\cite{ros}.\cj{do you have a citation for this pipeline? or some implementation detail, like a C++ implementation using OpenCV libararies? xlz: citations add, but how to cite OpenCV?}  Due to lack of visual detection of loop closure, we also add
 in a loop closure obtained from laser scans instead of image data at the
 start-end point. This dataset tests the typical scenario of visual SLAM with
 wheel odometry. The extracted dataset consists of 4892 robot poses, 5808
