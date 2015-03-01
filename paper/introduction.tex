@@ -22,6 +22,12 @@ characteristics. If the landmarks are moving, the current localization is either
 kidnapped by the movement, or resulting in distorted maps.
 
 %In this paper we devise new graph representations and algorithms to address the issue of front-end outliers and the issue of environmental dynamic elements within the factor graph framework. We evaluate existing approaches of robust SLAM and conduct experiments on real world datasets to validate the performance of our approach.
+\begin{figure}[t!]
+\centering
+  \includegraphics[width=0.48\textwidth]{fig/teaser}
+  \caption{Estimating the map and trajectory (blue) given simulated moving landmarks (black circle) with associated observations (yellow) on the Victoria Park dataset~\cite{isam}, and the GPS ground truth (red). The top row shows that the estimation obtained by conventional graph optimization given 2 and 5 moving landmarks is corrupted without considering landmark mobility. The bottom shows a robust estimation of the same data using our proposed method. Note that stationary landmarks are not shown, and GPS is unavailable at several places. }
+  \label{fig:teaser}
+\end{figure}
 
 In this paper, we present an approach to minimize the effects of
 moving landmarks, by treating them as outliers, in graph-based SLAM to

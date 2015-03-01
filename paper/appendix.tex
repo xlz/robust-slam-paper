@@ -78,8 +78,7 @@ Therefore, we can collect all the Jacobian matrices multiplied by either $\Gamma
 \end{aligned}
 \end{equation}
 
-\cj{if space permits, maybe a description of the stacking should be added? xlz: it will be very verbose cjenkins:understood.  this is not very important to the main contribution of the paper.  however, $A$, $b$, $\delta x$, and $\delta l$ appear and are used without much intuition for the reader.  Maybe a few more details can be given, such as the specific size of A and the fact that b is the residual error.  I also believe this stacking is covered in the iSAM paper, which could be cited.  Also, I am worried a reader could get hung up on the specific definition of ``stacking''.  So, maybe another choice of word could be used.}
-We stack the matrices to a huge matrix $A$, stack $\delta x, \delta l$ to $\delta \theta$ and vectors to $b$, and obtain the standard least squares problem.
+We concatenate the matrices $F, G, H, J$ in block form into a square matrix $A$, $\delta x, \delta l$ into $\delta \theta$, and $a$ and $c$ into the residual vector $b$ to then obtain the standard least squares problem:
 \begin{equation}
 \delta \theta^* = \operatorname*{arg\,min}_{\delta \theta}||A\delta \theta - b||^2
 \end{equation}
