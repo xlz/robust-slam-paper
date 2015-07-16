@@ -18,7 +18,7 @@ Following \cite{isam} we formulate the SLAM problem in graphical models as in Fi
 
 In considering dynamic environments, $W$ models the mobility of each landmark about whether it is capable of movement or not without considering extra kinematics, and robustify the observation term of the model in Equation \ref{eq:sensor}.  Through $W$, corrupted measurements associated with moving landmarks are suitably eliminated as outliers from the mapping process. It may be appealing to model a dynamically moving object as a sequence of variables. However, it is shown in the following that the scalar mobility variables are adequate enough to eliminate moving landmarks from graph optimization.
 
-We state the joint probability of all variables and measurements as:
+According to the proposed graphical model, we give the joint probability of all variables and measurements as:
 %\begin{equation}
 \begin{multline}
 P(X, L, U, Z, W) \propto  \\
@@ -27,7 +27,7 @@ P(X, L, U, Z, W) \propto  \\
 \end{multline}
 %\end{equation}
 
-Then the maximum likelihood (ML) estimate of the unobserved poses $X$ and landmarks $L$ given observations $Z$, known controls $U$, and the current latent parameters $W$ is
+Then the maximum likelihood (ML) estimate of the unobserved poses $X$ and landmarks $L$ given observations $Z$, known controls $U$, and the current latent parameters $W$ are defined as
 
 \begin{equation}
 X^*, L^* = \operatorname*{arg\,max}_{X,L} P(X,L,U,Z,W).
@@ -39,17 +39,17 @@ squares problem in this form $\operatorname*{arg\,min}_{\delta} || A
 different numerical methods. Derivation with more details is provided in appendix \ref{appendix:leastsquare}.
 
 Using a Gaussian representation with the latent extension, the sensor
-model, the process model and measurement equation follows
+model, the process model and measurement equation are defined as
 
 \begin{equation}
 \begin{aligned}
 x_i &= f_i(x_{i-1}, u_i) + \eta_i \\
-z_k &= h_k(x_{i_k}, l_{j_k}) + \nu_k
+z_k &= h_k(x_{i_k}, l_{j_k}) + \theta_k
 \end{aligned}
 \label{eq:gaussRepresentation}
 \end{equation}
 
-where $\eta_i$ and $\nu_k$ are noise terms which follow zero-mean normal distribution with covariance matrices $\Gamma_i$ and $\Sigma_k$. With this formulation, the second part of the joint probability \ref{eq:jointProb} is augmented with the mobility indicator. In addition we also apply a robust kernel to the observation term, then the formulation as a whole is given as:
+where $\eta_i$ and $\theta_k$ are noise terms which follow zero-mean Gaussian distribution with covariance matrices $\Gamma_i$ and $\Sigma_k$. With this formulation, the second part of the joint probability \ref{eq:jointProb} is augmented with the mobility indicator. In addition we also apply a robust kernel $v_k$ to the observation term, then the conditional probability of $z_k$ is defined as an augmented Gaussian distribution:
 
 %resolved \cj{need to reformat exp() to be within margin, e is placeholder, xlz: fixed, cjenkins: added aligned}
 \begin{equation}
