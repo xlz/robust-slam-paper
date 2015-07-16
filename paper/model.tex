@@ -39,13 +39,13 @@ model, the process model and measurement equation follows
 
 \begin{equation}
 \begin{aligned}
-x_i &= f_i(x_{i-1}, u_i) + \omega_i \\
+x_i &= f_i(x_{i-1}, u_i) + \eta_i \\
 z_k &= h_k(x_{i_k}, l_{j_k}) + \nu_k
 \end{aligned}
 \label{eq:gaussRepresentation}
 \end{equation}
 
-where $\omega_i$ and $\nu_k$ are noise terms which follow zero-mean normal distribution with covariance matrices $\Gamma_i$ and $\Sigma_k$. With this formulation, the second part of the joint probability \ref{eq:jointProb} is augmented with the mobility indicator. In addition we also apply a robust kernel to the observation term, then the formulation as a whole is given as:
+where $\eta_i$ and $\nu_k$ are noise terms which follow zero-mean normal distribution with covariance matrices $\Gamma_i$ and $\Sigma_k$. With this formulation, the second part of the joint probability \ref{eq:jointProb} is augmented with the mobility indicator. In addition we also apply a robust kernel to the observation term, then the formulation as a whole is given as:
 
 %resolved \cj{need to reformat exp() to be within margin, e is placeholder, xlz: fixed, cjenkins: added aligned}
 \begin{equation}
