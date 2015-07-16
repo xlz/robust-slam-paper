@@ -5,45 +5,45 @@
 For completeness of the paper, we review how to form the SLAM optimization problem as a least squares problem, following the derivation in \cite{isam}. Recall that in equation \ref{eq:MAP}, we need to solve a quadratic program, however we may approximate the terms with first order polynomials. For the process term,
 \begin{equation}
 \begin{aligned}
-f_i(x_{i-1}, u_i) - x_i\\
-\approx & {f_i(x_{i-1}^0, u_i)} + F_i^{i-1}\delta x_{i-1} - (x_i^0 + \delta x_i)\\
-=& F_i^{i-1}\delta x_{i-1} + G_i^i\delta x_i - a_i \\
+f_i(\boldsymbol{x}_{i-1}, \boldsymbol{u}_i) - \boldsymbol{x}_i\\
+\approx & {f_i(\boldsymbol{x}_{i-1}^0, \boldsymbol{u}_i)} + \boldsymbol{F}_i^{i-1}\delta \boldsymbol{x}_{i-1} - (\boldsymbol{x}_i^0 + \delta \boldsymbol{x}_i)\\
+=& \boldsymbol{F}_i^{i-1}\delta \boldsymbol{x}_{i-1} + \boldsymbol{G}_i^i\delta \boldsymbol{x}_i - \boldsymbol{a}_i \\
 \end{aligned}
 \label{eq:linearProcessTerm}
 \end{equation}
-where $I$ is the identity and %resolved\cj{does $I$ refer to the matrix identity? define xlz: yes}
+where $\boldsymbol{I}$ is the identity and %resolved\cj{does $I$ refer to the matrix identity? define xlz: yes}
 \begin{equation*}
 \begin{aligned}
-F_i^{i-1} &= \frac{\partial f_i(x_{i-1}, u_i)}{\partial x_{i-1}}|_{x_{i-1}^0}, \label{F} \\%\quad
- G_i^i &= -I, \text{(Identity matrix)}\\% \quad 
-a_i &= x_i^0 - f_i(x_{i-1}^0, u_i).
+\boldsymbol{F}_i^{i-1} &= \frac{\partial f_i(\boldsymbol{x}_{i-1}, \boldsymbol{u}_i)}{\partial \boldsymbol{x}_{i-1}}|_{\boldsymbol{x}_{i-1}^0}, \label{F} \\%\quad
+ \boldsymbol{G}_i^i &= -\boldsymbol{I}, \text{(Identity matrix)}\\% \quad 
+\boldsymbol{a}_i &= \boldsymbol{x}_i^0 - f_i(\boldsymbol{x}_{i-1}^0, \boldsymbol{u}_i).
 \end{aligned}
 \end{equation*}
 For the measurement term:
 \begin{equation}
 \begin{aligned}
-h_k(x_{i_k}, l_{j_k}) - z_k\\
-\approx & {h_k(x_{i_k}^0, l_{j_k}^0) + H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k}} - z_k\\
-= & {H_k^{i_k}\delta x_{i_k} + J_k^{j_k}\delta l_{j_k}} - c_k\\
+h_k(\boldsymbol{x}_{i_k}, \boldsymbol{l}_{j_k}) - \boldsymbol{z}_k\\
+\approx & {h_k(\boldsymbol{x}_{i_k}^0, \boldsymbol{l}_{j_k}^0) + \boldsymbol{H}_k^{i_k}\delta \boldsymbol{x}_{i_k} + \boldsymbol{J}_k^{j_k}\delta \boldsymbol{l}_{j_k}} - \boldsymbol{z}_k\\
+= & {\boldsymbol{H}_k^{i_k}\delta \boldsymbol{x}_{i_k} + \boldsymbol{J}_k^{j_k}\delta \boldsymbol{l}_{j_k}} - \boldsymbol{c}_k\\
 \end{aligned}
 \label{eq:linearMeasurementTerm}
 \end{equation}
-where, %resolved\cj{What is the difference between $H_k^{i_k}$ and $J_k^{j_k}$? Should $J_k^{j_k}$ be with respect to $x_{j_k}$? xlz: fixed, the denominator of $J$ should be $l_{j_k}$}
+where, %resolved\cj{What is the difference between $\boldsymbol{H}_k^{i_k}$ and $\boldsymbol{J}_k^{j_k}$? Should $\boldsymbol{J}_k^{j_k}$ be with respect to $\boldsymbol{x}_{j_k}$? xlz: fixed, the denominator of $J$ should be $\boldsymbol{l}_{j_k}$}
 \begin{equation*}
 \begin{aligned}
-H_k^{i_k} &= \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial x_{i_k}}|_{(x_{i_k}^0, l_{j_k}^0)}, \\ 
-J_k^{j_k} &= \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial l_{j_k}}|_{(x_{i_k}^0, l_{j_k}^0)} , \\
- c_k &= z_k - h_k(x_{i_k}^0, l_{j_k}^0)
+\boldsymbol{H}_k^{i_k} &= \frac{\partial h_k(\boldsymbol{x}_{i_k}, \boldsymbol{l}_{j_k})}{\partial \boldsymbol{x}_{i_k}}|_{(\boldsymbol{x}_{i_k}^0, \boldsymbol{l}_{j_k}^0)}, \\ 
+\boldsymbol{J}_k^{j_k} &= \frac{\partial h_k(\boldsymbol{x}_{i_k}, \boldsymbol{l}_{j_k})}{\partial \boldsymbol{l}_{j_k}}|_{(\boldsymbol{x}_{i_k}^0, \boldsymbol{l}_{j_k}^0)} , \\
+ \boldsymbol{c}_k &= \boldsymbol{z}_k - h_k(\boldsymbol{x}_{i_k}^0, \boldsymbol{l}_{j_k}^0)
 \end{aligned}
 %\label{eq:linearMeasurementTerm}
 \end{equation*}
 %In our case, 
 %\begin{equation}
 %\begin{aligned}
-%h(x_i, l_j) = 
+%h(\boldsymbol{x}_i, \boldsymbol{l}_j) = 
 %\begin{pmatrix}
-%\sqrt{(x_i^x - l_j^x)^2 + (x_i^y - l_j^y)^2}\\
-%\tan^{-1}(\frac{l_j^y - x_j^y}{l_j^x - x_i^x}) - \theta_i
+%\sqrt{(\boldsymbol{x}_i^x - \boldsymbol{l}_j^x)^2 + (\boldsymbol{x}_i^y - \boldsymbol{l}_j^y)^2}\\
+%\tan^{-1}(\frac{\boldsymbol{l}_j^y - \boldsymbol{x}_j^y}{\boldsymbol{l}_j^x - \boldsymbol{x}_i^x}) - \thet\boldsymbol{a}_i
 %\end{pmatrix}\\
 %\end{aligned}
 %\label{eq:measurementTermDerivative}
@@ -53,32 +53,32 @@ J_k^{j_k} &= \frac{\partial h_k(x_{i_k}, l_{j_k})}{\partial l_{j_k}}|_{(x_{i_k}^
 Therefore, the optimization problem thus becomes
 \begin{equation}
 \begin{aligned}
-\delta \theta^* = 
-\operatorname*{arg\,min}&_{\delta \theta}\{\sum_{i=1}^M||F_i^{i-1}\delta x_{i-1} 
-+ G_i^i\delta x_i - a_i||_{\Gamma_i}^2 \\ 
-&\hspace{-0.5cm}+ \sum_{k=1}^Kw_{j_k}||v_k(H_k^{i_k}\delta x_{i_k} 
- + J_k^{j_k}\delta l_{j_k} - c_k)||_{\Sigma_k}^2\}
+\delta \boldsymbol{\theta}^* = 
+\operatorname*{arg\,min}&_{\delta \boldsymbol{\theta}}\{\sum_{i=1}^M||\boldsymbol{F}_i^{i-1}\delta \boldsymbol{x}_{i-1} 
++ \boldsymbol{G}_i^i\delta \boldsymbol{x}_i - \boldsymbol{a}_i||_{\boldsymbol{\Gamma}_i}^2 \\ 
+&\hspace{-0.5cm}+ \sum_{k=1}^Kw_{j_k}||v_k(\boldsymbol{H}_k^{i_k}\delta \boldsymbol{x}_{i_k} 
+ + \boldsymbol{J}_k^{j_k}\delta \boldsymbol{l}_{j_k} - \boldsymbol{c}_k)||_{\boldsymbol{\Sigma}_k}^2\}
 \end{aligned}
 \end{equation}
 
 To rewrite the Mahalanobis norm, notice that
 \begin{equation}
-||e||_{\Gamma}^2 = e^T\Gamma^{-1}e = ||\Gamma^{-T/2}e||^2
+||\boldsymbol{e}||_{\boldsymbol{\Gamma}}^2 = \boldsymbol{e}^T\boldsymbol{\Gamma}^{-1}\boldsymbol{e} = ||\boldsymbol{\Gamma}^{-T/2}\boldsymbol{e}||^2
 \end{equation}
 
-Therefore, we can collect all the Jacobian matrices multiplied by either $\Gamma_i^{-T/2}$ or $v_k w_{j_k}^{1/2}\Sigma_k^{-T/2}$, specifically,
+Therefore, we can collect all the Jacobian matrices multiplied by either $\boldsymbol{\Gamma}_i^{-T/2}$ or $v_k w_{j_k}^{1/2}\boldsymbol{\Sigma}_k^{-T/2}$, specifically,
 
 \begin{equation}
 \begin{aligned}
-\delta \theta^* =& \operatorname*{arg\,min}_{\delta \theta}\{&
-\\ &\sum_{i=1}^M||\Gamma_i^{-T/2}F_i^{i-1}\delta x_{i-1} + \Gamma_i^{-T/2} G_i^i\delta x_i - \Gamma_i^{-T/2}a_i||^2  \\
-&+\sum_{k=1}^K||v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2} H_k^{i_k}\delta x_{i_k} 
-\\ &\hspace{0.5cm}+ v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2}J_k^{j_k}\delta l_{j_k} 
-- v_k\sqrt{w_{j_k}}\Sigma_k^{-T/2}c_k||^2\}
+\delta \boldsymbol{\theta}^* =& \operatorname*{arg\,min}_{\delta \boldsymbol{\theta}}\{&
+\\ &\sum_{i=1}^M||\boldsymbol{\Gamma}_i^{-T/2}\boldsymbol{F}_i^{i-1}\delta \boldsymbol{x}_{i-1} + \boldsymbol{\Gamma}_i^{-T/2} \boldsymbol{G}_i^i\delta \boldsymbol{x}_i - \boldsymbol{\Gamma}_i^{-T/2}\boldsymbol{a}_i||^2  \\
+&+\sum_{k=1}^K||v_k\sqrt{w_{j_k}}\boldsymbol{\Sigma}_k^{-T/2} \boldsymbol{H}_k^{i_k}\delta \boldsymbol{x}_{i_k} 
+\\ &\hspace{0.5cm}+ v_k\sqrt{w_{j_k}}\boldsymbol{\Sigma}_k^{-T/2}\boldsymbol{J}_k^{j_k}\delta \boldsymbol{l}_{j_k} 
+- v_k\sqrt{w_{j_k}}\boldsymbol{\Sigma}_k^{-T/2}\boldsymbol{c}_k||^2\}
 \end{aligned}
 \end{equation}
 
-We concatenate the matrices $F, G, H, J$ in block form into a square matrix $A$, $\delta x, \delta l$ into $\delta \theta$, and $a$ and $c$ into the residual vector $b$ to then obtain the standard least squares problem:
+We concatenate the matrices $\boldsymbol{F}, \boldsymbol{G}, \boldsymbol{H}, \boldsymbol{J}$ in block form into a square matrix $\boldsymbol{A}$, $\delta \boldsymbol{x}, \delta \boldsymbol{l}$ into $\delta \boldsymbol{\theta}$, and $\boldsymbol{a}$ and $\boldsymbol{c}$ into the residual vector $\boldsymbol{b}$ to then obtain the standard least squares problem:
 \begin{equation}
-\delta \theta^* = \operatorname*{arg\,min}_{\delta \theta}||A\delta \theta - b||^2
+\delta \boldsymbol{\theta}^* = \operatorname*{arg\,min}_{\delta \boldsymbol{\theta}}||\boldsymbol{A}\delta \boldsymbol{\theta} - \boldsymbol{b}||^2
 \end{equation}

@@ -4,17 +4,17 @@ Following the notation in section \ref{sec:model}, we introduce the Expectation 
 \subsection{Estimation of Latent Parameters}
 \label{sec:traditionalEM}
 
-As described in \cite{rogers2010slam}, in Equation \ref{eq:sensor}, the hidden variables $w_k$ must be estimated from multiple observations of each landmark. In the \textbf{M step}, we select the optimal $w$ which maximizes the joint likelihood. However there is a trivial solution to the likelihood maximization which sets $w_k = 0$ for all $k$, we penalize the log-likelihood objective in Equation \ref{eq:lagrangeMultiplier} with Lagrange multiplier which act as priors of the latent landmark mobility variables:
+As described in \cite{rogers2010slam}, in Equation \ref{eq:sensor}, the hidden variables $w_k$ must be estimated from multiple observations of each landmark. In the \textbf{M step}, we select the optimal $\boldsymbol{w}$ which maximizes the joint likelihood. However there is a trivial solution to the likelihood maximization which sets $w_k = 0$ for all $k$, we penalize the log-likelihood objective in Equation \ref{eq:lagrangeMultiplier} with Lagrange multiplier which act as priors of the latent landmark mobility variables:
 \begin{multline}
 %\begin{aligned}
-\mathrm{Obj}(Z, X, L, W) = \\ \sum_k \left[ -w_{j_k}(\tilde{\mu}^T_k\Sigma_k^{-1}\tilde{\mu}_k) \right] - \frac{1}{2}\lambda(1 - w)^T(1 - w)
+\mathrm{Obj}(Z, X, L, W) = \\ \sum_k \left[ -w_{j_k}(\tilde{\boldsymbol{\mu}}^T_k\boldsymbol{\Sigma}_k^{-1}\tilde{\boldsymbol{\mu}}_k) \right] - \frac{1}{2}\lambda(1 - \boldsymbol{w})^T(1 - \boldsymbol{w})
 %\end{aligned}
 \label{eq:lagrangeMultiplier}
 \end{multline}
-where $\tilde{\mu}_k = v_k (h_k(x_{i_k}, l_{j_k}) - z_k)$ is the robustified prediction error of observation $k$ obtained from the E step, and $w_{j_k}$ is the weight to estimate for landmark $l = j_k$ associated with the $k$-th observation. We equate the derivative of the objective function with respect to $w_l$ to zero, and maximize the log likelihood, then for each $w_l$ we get
+where $\tilde{\boldsymbol{\mu}}_k = v_k (h_k(\boldsymbol{x}_{i_k}, \boldsymbol{l}_{j_k}) - \boldsymbol{z}_k)$ is the robustified prediction error of observation $k$ obtained from the E step, and $w_{j_k}$ is the weight to estimate for landmark $l = j_k$ associated with the $k$-th observation. We equate the derivative of the objective function with respect to $w_l$ to zero, and maximize the log likelihood, then for each $w_l$ we get
 \begin{equation}
 \begin{aligned}
-w_l = 1 - \frac{1}{\lambda} \sum_{k \in K_l}\tilde{\mu}^T_k\Sigma_k^{-1}\tilde{\mu}_k
+w_l = 1 - \frac{1}{\lambda} \sum_{k \in K_l}\tilde{\boldsymbol{\mu}}^T_k\boldsymbol{\Sigma}_k^{-1}\tilde{\boldsymbol{\mu}}_k
 \end{aligned}
 \label{eq:wk}
 \end{equation}
@@ -26,31 +26,31 @@ In the \textbf{E step}, we use the estimated latent parameters to obtain minimum
 \begin{equation}
 \begin{aligned}
 X^*, L^* = \operatorname*{arg\,max}_{X, L} & \{ -\log p(X, L, U, Z, W) \}\\
-=\operatorname*{arg\,max}_{X, L} & \{ \sum_{i=1}^M||f_i(x_{i-1}, u_i) - x_i)||^2_{\Gamma_i} \\
-&+ \sum_{k=1}^K w_{j_k}|| v_k (h_k(x_{i_k}, l_{j_k}) - z_k)||^2_{\Sigma_k} \\ 
-&+ \sum_{k=1}^K ||1 - v_k||^2_{\Xi_k} \}
+=\operatorname*{arg\,max}_{X, L} & \{ \sum_{i=1}^M||f_i(\boldsymbol{x}_{i-1}, \boldsymbol{u}_i) - \boldsymbol{x}_i||^2_{\boldsymbol{\Gamma}_i} \\
+&+ \sum_{k=1}^K w_{j_k}|| v_k (h_k(\boldsymbol{x}_{i_k}, \boldsymbol{l}_{j_k}) - \boldsymbol{z}_k)||^2_{\boldsymbol{\Sigma}_k} \\ 
+&+ \sum_{k=1}^K ||1 - v_k||^2_{\boldsymbol{\Xi}_k} \}
 \end{aligned}
 \label{eq:MAP}
 \end{equation}
-where the $||.||_\Sigma$ term denotes the Mahalanobis distance with covariance $\Sigma$. The penalty term $|| 1 - v_k||^2_{\Xi_k}$ here is the switching prior introduced in \cite{Switchable12}. Note that in this step, $w$ is fixed and the penalty term with respect to $w_k$ in the objective for estimating $w$ becomes a constant, thus it does not appear in the objective function.
+where the $||.||_{\boldsymbol{\Sigma}}$ term denotes the Mahalanobis distance with covariance $\boldsymbol{\Sigma}$. The penalty term $|| 1 - v_k||^2_{\boldsymbol{\Xi}_k}$ here is the switching prior introduced in \cite{Switchable12}. Note that in this step, $\boldsymbol{w}$ is fixed and the penalty term with respect to $w_k$ in the objective for estimating $\boldsymbol{w}$ becomes a constant, thus it does not appear in the objective function.
 
 Here we apply the Dynamic Covariance Scaling\cite{DCS} kernel $v_k$ to each individual observation $k$. The factor $v_k$ for observation $k$ is given as:
 
 \begin{equation}
 \begin{aligned}
-v_k = \min \left\{ 1, \frac{2\Phi}{\Phi + w_{j_k}\mu_k^T \Sigma_k^{-1} \mu_k}\right\}
+v_k = \min \left\{ 1, \frac{2\Phi}{\Phi + w_{j_k}\boldsymbol{\mu}_k^T \boldsymbol{\Sigma}_k^{-1} \boldsymbol{\mu}_k}\right\}
 \end{aligned}
 \label{eq:DCS}
 \end{equation}
 
-where $\mu_k = h_k(x_{i_k}, l_{j_k}) - z_k$ is the original prediction error of observation $k$. The DCS kernel is shown to result in an upper bound specified by $\Phi$ for the second part of the objective function. By specifying the upper bound $\Phi$ for all robust edges, $v$ dynamically scales the information matrices of all edges each iteration within the graph optimization process, and replaces the covariances of outliers with large ones making it near uniform. $\Phi$ is chosen as 1 in our implementation as suggested by its author. 
+where $\boldsymbol{\mu}_k = h_k(\boldsymbol{x}_{i_k}, \boldsymbol{l}_{j_k}) - \boldsymbol{z}_k$ is the original prediction error of observation $k$. The DCS kernel is shown to result in an upper bound specified by $\Phi$ for the second part of the objective function. By specifying the upper bound $\Phi$ for all robust edges, $v$ dynamically scales the information matrices of all edges each iteration within the graph optimization process, and replaces the covariances of outliers with large ones making it near uniform. $\Phi$ is chosen as 1 in our implementation as suggested by its author. 
 
 With some derivation %\footnote{See Appendix section \ref{appendix:leastsquare} for detail.}
 (Appendix section), the optimization problem can be formed as a standard least-squares problem:
 %resolved\cj{why the subscript covariance $_2$? xlz: removed $_2$, this is just plain L2-norm}
 
 \begin{equation}
-\delta^* = \operatorname*{arg\,max}_\delta||A\delta - b||^2
+\boldsymbol{\delta}^* = \operatorname*{arg\,max}_{\boldsymbol{\delta}}||\boldsymbol{A}\boldsymbol{\delta} - \boldsymbol{b}||^2
 \label{eq:optimization}
 \end{equation}
 
@@ -61,15 +61,15 @@ The algorithm, while reliable as shown in experiments in \cite{haehnel03iros}, i
 We introduce the theoretical basis for an incremental implementation of the EM algorithm for the problem. As suggested in \cite{neal1998EM}, if the joint probability is fully factorized with regards to the examples, as is in our case, we can use the following algorithm for update in the E and M step while preserving the correctness:
 
 \paragraph{E step} 
-In equation \ref{eq:MAP}, if we have one new observation $z_{K+1}$ at time $K+1$, then
+In equation \ref{eq:MAP}, if we have one new observation $\boldsymbol{z}_{K+1}$ at time $K+1$, then
 
 \begin{equation}
 \begin{aligned}
-x_{i_{K+1}}^*, l_{j_{K+1}}^*  
-&= \operatorname*{arg\,max}_{ x_{i_{K+1}}, l_{j_{K+1}}} \{ 
-\sum_{i}||f_i(x_{i-1}, u_i) - x_i)||^2_{\Gamma_i} \\
-&\hspace{0.5cm}+ \sum_{k=1}^{K+1} w_{j_k}||v_k(h_k(x_{i_k}, l_{j_k}) - z_k)||^2_{\Sigma_k} \\ 
-&\hspace{0.5cm}+ \sum_{k=1}^{K+1}||1-v_k||^2_{\Xi_k} \}
+\boldsymbol{x}_{i_{K+1}}^*, \boldsymbol{l}_{j_{K+1}}^*  
+&= \operatorname*{arg\,max}_{ \boldsymbol{x}_{i_{K+1}}, \boldsymbol{l}_{j_{K+1}}} \{ 
+\sum_{i}||f_i(\boldsymbol{x}_{i-1}, \boldsymbol{u}_i) - \boldsymbol{x}_i)||^2_{\boldsymbol{\Gamma}_i} \\
+&\hspace{0.5cm}+ \sum_{k=1}^{K+1} w_{j_k}||v_k(h_k(\boldsymbol{x}_{i_k}, \boldsymbol{l}_{j_k}) - \boldsymbol{z}_k)||^2_{\boldsymbol{\Sigma}_k} \\ 
+&\hspace{0.5cm}+ \sum_{k=1}^{K+1}||1-v_k||^2_{\boldsymbol{\Xi}_k} \}
 %&= \operatorname*{arg\,max}_{ x_{i_{K+1}}, l_{j_{K+1}}} \{ 
 %\sum_{i}||f_i(x_{i-1}, u_i) - x_i)||^2_{\Gamma_i} \\
 %&+ \sum_{k=1}^{K+1} w_{j_k}||v_k(h_k(x_{i_k}, l_{j_k}) - z_k)||^2_{\Sigma_k} \\
@@ -81,8 +81,8 @@ x_{i_{K+1}}^*, l_{j_{K+1}}^*
 and equation \ref{eq:facMAP} can also be written in the form of \ref{eq:optimization}, but with less parameters. So, the incremental E step becomes
 \begin{itemize}
 \item Choose one observation term $k$ to be updated, such as $k = K+1$
-\item Set $x_{i_p}^{(t)} = x_{i_p}^{(t-1)}, l_{j_p}^{(t)} = l_{j_p}^{(t-1)}$ for $p \neq k$
-\item Set $x_{i_k}, l_{j_k}$ according to equation \ref{eq:MAP} in equation \ref{eq:optimization}'s form.
+\item Set $\boldsymbol{x}_{i_p}^{(t)} = \boldsymbol{x}_{i_p}^{(t-1)}, \boldsymbol{l}_{j_p}^{(t)} = \boldsymbol{l}_{j_p}^{(t-1)}$ for $p \neq k$
+\item Set $\boldsymbol{x}_{i_k}, \boldsymbol{l}_{j_k}$ according to equation \ref{eq:MAP} in equation \ref{eq:optimization}'s form.
 \end{itemize}
 \paragraph{M step} The same step as introduced in section \ref{sec:traditionalEM}, using the derivation in equation \ref{eq:wk}.
 
