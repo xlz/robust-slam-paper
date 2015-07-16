@@ -12,9 +12,13 @@
 \end{figure}
 %\end{wrapfigure}
 
-Following \cite{isam} we formulate the SLAM problem in graphical models as in Figure \ref{fig:model}. Specifically, the robot states (as position and orientation over time in map coordinates) are denoted by $X = \{x_i\}$ with $i \in 0, \dots T$, the landmark locations in map coordinates by $L = \{l_j\}$ with $j \in 1,\dots, N$, the control inputs for movement by $U = \{u_i\}$ for $i \in 1,\dots, T$ and the landmark measurements in robot coordinates by $Z = \{z_k\}$ with $k \in 1, \dots, K$. In addition to the classical graph SLAM formulation, we augment the representation of landmarks with a set of $N$ scalar latent parameters $W = \{w_j\}$ with $j \in 1, \dots, N$.
+Following \cite{isam} we formulate the SLAM problem in graphical models as in Figure \ref{fig:model}. Specifically, the robot states (as position and orientation over time in map coordinates) are denoted by $X = \{x_i\}$ with $i \in 0, \dots T$, the landmark locations in map coordinates by $L = \{l_j\}$ with $j \in 1,\dots, N$, the control inputs for movement by $U = \{u_i\}$ for $i \in 1,\dots, T$ and the landmark measurements in robot coordinates by $Z = \{z_k\}$ with $k \in 1, \dots, K$. In addition to the classical graph SLAM formulation, we augment the representation of landmarks with a set of $N$ scalar latent parameters $W = \{w_j\}$ with $j \in 1, \dots, N$. At each time $k$, the measurement $z_k$ corresponds to robot pose $x_{i_k}$, landmark $l_{j_k}$, and latent variable $w_{j_k}$, where $i_k$ associates robot poses with measurements, and $j_k$ associates landmarks with measurements.
+
 %resolved \cj{is W for data associateion? if so, this should be stated explicitly xlz: how about this? cjenkins: better, i added a little more}
-In considering dynamic environments, $W$ models the mobility of each landmark and robustify the observation term of the model in Equation \ref{eq:sensor}.  Through $W$, corrupted measurements associated with moving landmarks are suitably eliminated as outliers from the mapping process. We state the joint probability of all variables and measurements as:
+
+In considering dynamic environments, $W$ models the mobility of each landmark about whether it is capable of movement or not without considering extra kinematics, and robustify the observation term of the model in Equation \ref{eq:sensor}.  Through $W$, corrupted measurements associated with moving landmarks are suitably eliminated as outliers from the mapping process. It may be appealing to model a dynamically moving object as a sequence of variables. However, it is shown in the following that the scalar mobility variables are adequate enough to eliminate moving landmarks from graph optimization.
+
+We state the joint probability of all variables and measurements as:
 %\begin{equation}
 \begin{multline}
 P(X, L, U, Z, W) \propto  \\
