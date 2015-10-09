@@ -37,7 +37,7 @@ trajectory are built using a non-linear batch optimization-based SLAM method
 with an approximate accuracy of 20 cm. We extract potentially moving landmarks
 from a indoor subset of this dataset through a standard pipeline of feature
 detection and extraction, feature correspondence, and stereo estimation of
-keypoint depth implemented with OpenCV~\cite{opencv} and ROS~\cite{ros}.%resolved\cj{do you have a citation for this pipeline? or some implementation detail, like a C++ implementation using OpenCV libararies? xlz: citations add, but how to cite OpenCV?}  
+keypoint depth implemented with OpenCV~\cite{opencv} and ROS~\cite{ros}. %resolved\cj{do you have a citation for this pipeline? or some implementation detail, like a C++ implementation using OpenCV libararies? xlz: citations add, but how to cite OpenCV?}  
 Due to lack of visual detection of loop closure, we also add
 in a loop closure obtained from laser scans instead of image data at the
 start-end point. This dataset tests the typical scenario of visual SLAM with
@@ -125,7 +125,7 @@ without the robust factor $v_k$.  As shown in Figure \ref{fig:small-movement},
 the resulting trajectory is distorted. One explanation for this is from the
 characteristics of the datasets.  In their paper, they investigated datasets
 containing landmarks moved from one room to another room over a long period of
-time.%, which is not the case in the Victoria Part dataset. 
+time. %, which is not the case in the Victoria Part dataset. 
 %the dataset presented in figure \ref{fig:small-movement} 
 Such long-duration mobility is not the case in the Victoria Part dataset, where the motion of the landmark is relatively small and continuous. In fact, %in figure \ref{fig:large-movement} 
 the motion of the
